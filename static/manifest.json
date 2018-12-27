@@ -1,0 +1,15 @@
+{
+  "name": "Pungyo",
+  "start_url": "http://charlied.xyz",
+  "description": "A Personal Relationship Manager app built on Vue.js and the decentralized web through blockstack.",
+  "icons": [{
+    "src": "./placholder.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  },
+  {
+    "src": "./avatar-placeholder.png",
+    "sizes": "400x400",
+    "type": "image/png"
+  }]
+}
