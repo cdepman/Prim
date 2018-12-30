@@ -1,6 +1,6 @@
 <template>
   <li class="hello">
-    {{ friend.text }}
+    {{ friend.name }}
   </li>
 </template>
 

@@ -70,8 +70,7 @@ export default {
       }
       this.people.unshift({
         id: this.uidCount++,
-        text: this.person.trim(),
-        completed: false
+        name: this.person.trim()
       })
       this.person = ''
     },
@@ -92,9 +91,6 @@ export default {
     },
     signOut () {
       this.blockstack.signUserOut(window.location.href)
-    },
-    getButtonText () {
-      this.person
     }
   }
 }
@@ -118,10 +114,6 @@ label {
   }
 }
 .list-group-item {
-  &.completed label {
-    text-decoration: line-through;
-  }
-
   .delete {
     display: none;
   }
