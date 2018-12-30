@@ -14,31 +14,17 @@
             <small class="pull-right">
             {{ user.username ? user.username : user.identityAddress }}
             </small>
-
           </h2>
-          <form @submit.prevent="addPerson" :disabled="! person">
-            <div class="input-group">
-              <input v-model="person" type="text" class="form-control" placeholder="Write a person's name..." autofocus>
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="submit" :disabled="! person">Add</button>
-              </span>
-            </div>
-          </form>
-
+          <div class="input-group">
+            <input v-on:keyup.enter="addPerson" v-model="person" type="text" class="form-control" placeholder="Enter a friend's name..." autofocus>
+          </div>
+          <span class="input-group-btn">
+            <button v-if="person.length" class="btn btn-default" v-on:click="addPerson" :disabled="! person">Add {{ person }} to your dossier</button>
+          </span>
           <ul class="list-group">
-            <li v-for="person in people"
-              class="list-group-item"
-              :class="{completed: person.completed}"
-              :key="person.id">
-              <label>
-                <input type="checkbox" v-model="person.completed">{{ person.text }}
-              </label>
-              <a @click.prevent="people.splice(people.indexOf(person), 1)"
-                class="delete pull-right"
-                href="#">X</a>
-            </li>
+            <friend v-for="person in people" class="list-group-item" :key="person.id" v-bind:friend="person">
+            </friend>
           </ul>
-
         </div>
       </div>
     </div>
@@ -46,7 +32,8 @@
 </template>
 
 <script>
-var STORAGE_FILE = 'people.json'
+import Friend from './Friend.vue'
+const FRIEND_STORAGE_FILE = 'people.json'
 
 export default {
   name: 'dashboard',
@@ -59,13 +46,16 @@ export default {
       uidCount: 0
     }
   },
+  components: {
+    friend: Friend
+  },
   watch: {
     people: {
       handler: function (people) {
         const blockstack = this.blockstack
 
         // encryption is now enabled by default
-        return blockstack.putFile(STORAGE_FILE, JSON.stringify(people))
+        return blockstack.putFile(FRIEND_STORAGE_FILE, JSON.stringify(people))
       },
       deep: true
     }
@@ -85,12 +75,11 @@ export default {
       })
       this.person = ''
     },
-
     fetchData () {
       const blockstack = this.blockstack
-      blockstack.getFile(STORAGE_FILE) // decryption is enabled by default
-      .then((personText) => {
-        var people = JSON.parse(personText || '[]')
+      blockstack.getFile(FRIEND_STORAGE_FILE) // decryption is enabled by default
+      .then((peopleJSONBlob) => {
+        var people = JSON.parse(peopleJSONBlob || '[]')
         people.forEach(function (person, index) {
           person.id = index
         })
@@ -98,9 +87,14 @@ export default {
         this.people = people
       })
     },
+    editPerson () {
 
+    },
     signOut () {
       this.blockstack.signUserOut(window.location.href)
+    },
+    getButtonText () {
+      this.person
     }
   }
 }
@@ -112,7 +106,9 @@ export default {
 input::placeholder {
   color: grey;
 }
-
+.input-group {
+  width: 100%;
+}
 label {
   margin-bottom: 0;
   // width: 100%;

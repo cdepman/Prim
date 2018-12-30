@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
     <div>
-      <h1>Blockstack Todo</h1>
-      <p>A decentralized Todo app built on <a href="https://blockstack.org" target="_blank">Blockstack</a></p>
+      <h1>Pungyo PRM</h1>
+      <p>A decentralized PRM built on <a href="https://blockstack.org" target="_blank">Blockstack</a></p>
       <button class="btn btn-default" @click.prevent="signIn">Sign In With Blockstack</button>
     </div>
   </div>
