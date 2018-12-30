@@ -3,26 +3,29 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
-          <h1 class="page-header">Pungyo PRM
-            <img :src="user.avatarUrl() ? user.avatarUrl() : '/avatar-placeholder.png'" class="avatar">
-            <small><span class="sign-out">(<a href="#" @click.prevent="signOut">Sign Out</a>)</span></small>
-          </h1>
-          <h2 class="user-info">
-            <small>
-              {{ user.name() ? user.name() : 'Anonymous Person' }}'s People
-            </small>
-            <small class="pull-right">
-            {{ user.username ? user.username : user.identityAddress }}
-            </small>
-          </h2>
+          <page-header v-bind:user="user">
+          </page-header>
           <div class="input-group">
-            <input v-on:keyup.enter="addPerson" v-model="person" type="text" class="form-control" placeholder="Enter a friend's name..." autofocus>
+            <input v-on:keyup.enter="addPerson" 
+                   v-model="person" 
+                   type="text" 
+                   class="form-control" 
+                   placeholder="Enter a friend's name..." 
+                   autofocus>
           </div>
           <span class="input-group-btn">
-            <button v-if="person.length" class="btn btn-default" v-on:click="addPerson" :disabled="! person">Add {{ person }} to your dossier</button>
+            <button v-if="person.length" 
+                    class="btn btn-default" 
+                    v-on:click="addPerson" 
+                    :disabled="! person">
+                    Add {{ person }} to your dossier
+            </button>
           </span>
           <ul class="list-group">
-            <friend v-for="person in people" class="list-group-item" :key="person.id" v-bind:friend="person">
+            <friend v-for="person in people" 
+                    class="list-group-item" 
+                    :key="person.id" 
+                    v-bind:friend="person">
             </friend>
           </ul>
         </div>
@@ -33,11 +36,14 @@
 
 <script>
 import Friend from './Friend.vue'
+import PageHeader from './PageHeader.vue'
 const FRIEND_STORAGE_FILE = 'people.json'
 
 export default {
   name: 'dashboard',
-  props: ['user'],
+  props: {
+    user: Object
+  },
   data () {
     return {
       blockstack: window.blockstack,
@@ -47,7 +53,8 @@ export default {
     }
   },
   components: {
-    friend: Friend
+    friend: Friend,
+    pageHeader: PageHeader
   },
   watch: {
     people: {

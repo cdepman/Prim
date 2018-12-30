@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="welcome">
     <div>
       <h1>Pungyo PRM</h1>
       <p>A decentralized PRM built on <a href="https://blockstack.org" target="_blank">Blockstack</a></p>
@@ -28,7 +28,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.hello {
+.welcome {
   height: 100%;
   display: flex;
   align-items: center;

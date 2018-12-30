@@ -1,5 +1,5 @@
 <template>
-  <li class="hello">
+  <li>
     {{ friend.name }}
   </li>
 </template>
