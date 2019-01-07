@@ -25,7 +25,9 @@
             <friend v-for="person in people" 
                     class="list-group-item" 
                     :key="person.id" 
-                    v-bind:friend="person">
+                    v-bind:friend="person"
+                    @created="handleCreate"
+                    @friendSelected="handleFriendSelected">
             </friend>
           </ul>
         </div>
@@ -71,6 +73,12 @@ export default {
     this.fetchData()
   },
   methods: {
+    handleCreate () {
+      console.log('Child has been created.')
+    },
+    handleFriendSelected (data) {
+      console.log(data)
+    },
     addPerson () {
       if (!this.person.trim()) {
         return
@@ -93,7 +101,7 @@ export default {
         this.people = people
       })
     },
-    editPerson () {
+    expandPerson () {
 
     },
     signOut () {
