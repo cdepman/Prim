@@ -22,13 +22,21 @@
             </button>
           </span>
           <ul class="list-group">
-            <friend v-for="person in people" 
-                    class="list-group-item" 
-                    :key="person.id" 
-                    v-bind:friend="person"
-                    @created="handleCreate"
-                    @friendSelected="handleFriendSelected">
-            </friend>
+            <div v-for="person in people"
+                 class="list-group-item"
+                 v-bind:friend="person"
+                 :key="person.id">
+              <friend-detail 
+                v-if="selectedId === person.id"
+                v-bind:friend="person">
+              </friend-detail>
+              <friend
+                v-else
+                v-bind:friend="person"
+                @created="handleCreate"
+                @friendSelected="handleFriendSelected">
+              </friend>
+            </div>
           </ul>
         </div>
       </div>
@@ -37,7 +45,8 @@
 </template>
 
 <script>
-import Friend from './Friend.vue'
+import FriendSimpleListItem from './FriendSimpleListItem.vue'
+import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
 const FRIEND_STORAGE_FILE = 'people.json'
 
@@ -51,12 +60,14 @@ export default {
       blockstack: window.blockstack,
       people: [],
       person: '',
-      uidCount: 0
+      uidCount: 0,
+      selectedId: null
     }
   },
   components: {
-    friend: Friend,
-    pageHeader: PageHeader
+    friend: FriendSimpleListItem,
+    pageHeader: PageHeader,
+    friendDetail: FriendDetailListItem
   },
   watch: {
     people: {
@@ -77,7 +88,8 @@ export default {
       console.log('Child has been created.')
     },
     handleFriendSelected (data) {
-      console.log(data)
+      console.log(`selected: ${data}`)
+      this.selectedId = data
     },
     addPerson () {
       if (!this.person.trim()) {
@@ -100,9 +112,6 @@ export default {
         this.uidCount = people.length
         this.people = people
       })
-    },
-    expandPerson () {
-
     },
     signOut () {
       this.blockstack.signUserOut(window.location.href)

@@ -1,6 +1,6 @@
 <template>
   <div class="friend" v-on:click="selectFriend">
-    {{ friend.name }}
+    {{ friend.name.toUpperCase() }}
   </div>
 </template>
 
@@ -9,12 +9,9 @@ export default {
   props: {
     friend: Object
   },
-  created () {
-    this.$emit('created')
-  },
   methods: {
     selectFriend: function (event) {
-      this.$emit('friendSelected', this.friend.id)
+      console.log('HELLO FROM THE OUTSIDE')
     }
   }
 }
