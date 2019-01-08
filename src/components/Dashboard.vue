@@ -28,7 +28,8 @@
                  :key="person.id">
               <friend-detail 
                 v-if="selectedId === person.id"
-                v-bind:friend="person">
+                v-bind:friend="person"
+                @friendDeselected="handleFriendDeselected">
               </friend-detail>
               <friend
                 v-else
@@ -87,9 +88,11 @@ export default {
     handleCreate () {
       console.log('Child has been created.')
     },
-    handleFriendSelected (data) {
-      console.log(`selected: ${data}`)
-      this.selectedId = data
+    handleFriendSelected (selectedFriendId) {
+      this.selectedId = selectedFriendId
+    },
+    handleFriendDeselected () {
+      this.selectedId = null
     },
     addPerson () {
       if (!this.person.trim()) {
@@ -138,6 +141,11 @@ label {
   }
 }
 .list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  cursor: pointer;
+  
   .delete {
     display: none;
   }

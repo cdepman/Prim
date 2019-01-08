@@ -1,6 +1,9 @@
 <template>
-  <div class="friend" v-on:click="selectFriend">
-    {{ friend.name.toUpperCase() }}
+  <div class="friend-detail" v-on:click="deselectFriend">
+    <div class="friend-name">
+      {{ friend.name }}
+      {{ friend.id }}
+    </div>
   </div>
 </template>
 
@@ -10,18 +13,19 @@ export default {
     friend: Object
   },
   methods: {
-    selectFriend: function (event) {
-      console.log('HELLO FROM THE OUTSIDE')
+    deselectFriend: function () {
+      this.$emit('friendDeselected')
     }
   }
 }
 </script>
 
 <style scoped>
-.friend {
-  cursor: pointer;
+.friend-detail {
+  background: lavenderblush;
+  width: 100%;
 }
-.friend:hover {
-  background-color: aliceblue;
+.friend-name {
+  margin-left: 10px;
 }
 </style>

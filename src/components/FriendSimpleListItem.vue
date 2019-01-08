@@ -24,7 +24,8 @@ export default {
 
 <style scoped>
 .friend {
-  cursor: pointer;
+  margin-left: 10px;
+  width: 100%;
 }
 .friend:hover {
   background-color: aliceblue;
