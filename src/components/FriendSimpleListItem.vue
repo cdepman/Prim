@@ -8,8 +8,7 @@
 
 export default {
   props: {
-    friend: Object,
-    selected: Boolean
+    friend: Object
   },
   created () {
     this.$emit('created')

@@ -46,10 +46,25 @@
 </template>
 
 <script>
+import Person from '../dataModels/Person.js'
 import FriendSimpleListItem from './FriendSimpleListItem.vue'
 import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
 const FRIEND_STORAGE_FILE = 'people.json'
+
+const dashboardDataModel = {
+  blockstack: window.blockstack,
+  people: [],
+  person: new Person(),
+  uidCount: 0,
+  selectedId: null
+}
+
+const components = {
+  friend: FriendSimpleListItem,
+  pageHeader: PageHeader,
+  friendDetail: FriendDetailListItem
+}
 
 export default {
   name: 'dashboard',
@@ -57,19 +72,9 @@ export default {
     user: Object
   },
   data () {
-    return {
-      blockstack: window.blockstack,
-      people: [],
-      person: '',
-      uidCount: 0,
-      selectedId: null
-    }
+    return dashboardDataModel
   },
-  components: {
-    friend: FriendSimpleListItem,
-    pageHeader: PageHeader,
-    friendDetail: FriendDetailListItem
-  },
+  components: components,
   watch: {
     people: {
       handler: function (people) {
@@ -95,7 +100,8 @@ export default {
       this.selectedId = null
     },
     addPerson () {
-      if (!this.person.trim()) {
+      if (!this.person.is_complete()) {
+        console.log('person data incomplete')
         return
       }
       this.people.unshift({
@@ -109,6 +115,7 @@ export default {
       blockstack.getFile(FRIEND_STORAGE_FILE) // decryption is enabled by default
       .then((peopleJSONBlob) => {
         var people = JSON.parse(peopleJSONBlob || '[]')
+        console.log('fetched: ', peopleJSONBlob)
         people.forEach(function (person, index) {
           person.id = index
         })
