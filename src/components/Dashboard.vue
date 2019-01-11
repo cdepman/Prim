@@ -6,19 +6,25 @@
           <page-header v-bind:user="user">
           </page-header>
           <div class="input-group">
-            <input v-on:keyup.enter="addPerson" 
-                   v-model="person" 
-                   type="text" 
-                   class="form-control" 
-                   placeholder="Enter a friend's name..." 
+            <input v-on:keyup.enter="addPerson"
+                   v-model="person.firstName"
+                   type="text"
+                   class="form-control"
+                   placeholder="First Name"
+                   autofocus>
+            <input v-on:keyup.enter="addPerson"
+                   v-model="person.lastName"
+                   type="text"
+                   class="form-control"
+                   placeholder="Last Name"
                    autofocus>
           </div>
           <span class="input-group-btn">
-            <button v-if="person.length" 
-                    class="btn btn-default" 
-                    v-on:click="addPerson" 
+            <button v-if="person.firstName"
+                    class="btn btn-default"
+                    v-on:click="addPerson"
                     :disabled="! person">
-                    Add {{ person }} to your dossier
+                    Add {{ person.firstName }} to your dossier
             </button>
           </span>
           <ul class="list-group">
@@ -26,7 +32,7 @@
                  class="list-group-item"
                  v-bind:friend="person"
                  :key="person.id">
-              <friend-detail 
+              <friend-detail
                 v-if="selectedId === person.id"
                 v-bind:friend="person"
                 @friendDeselected="handleFriendDeselected">
@@ -50,15 +56,7 @@ import Person from '../dataModels/Person.js'
 import FriendSimpleListItem from './FriendSimpleListItem.vue'
 import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
-const FRIEND_STORAGE_FILE = 'people.json'
-
-const dashboardDataModel = {
-  blockstack: window.blockstack,
-  people: [],
-  person: new Person(),
-  uidCount: 0,
-  selectedId: null
-}
+const FRIEND_STORAGE_FILE = 'people1.json'
 
 const components = {
   friend: FriendSimpleListItem,
@@ -72,15 +70,19 @@ export default {
     user: Object
   },
   data () {
-    return dashboardDataModel
+    return {
+      people: [],
+      uidCount: 0,
+      selectedId: null,
+      blockstack: window.blockstack,
+      person: {}
+    }
   },
   components: components,
   watch: {
     people: {
       handler: function (people) {
         const blockstack = this.blockstack
-
-        // encryption is now enabled by default
         return blockstack.putFile(FRIEND_STORAGE_FILE, JSON.stringify(people))
       },
       deep: true
@@ -99,28 +101,31 @@ export default {
     handleFriendDeselected () {
       this.selectedId = null
     },
+    getPerson () {
+      return Object.assign(new Person(), this.person)
+    },
     addPerson () {
-      if (!this.person.is_complete()) {
+      if (!this.getPerson().isComplete()) {
         console.log('person data incomplete')
         return
       }
-      this.people.unshift({
-        id: this.uidCount++,
-        name: this.person.trim()
-      })
-      this.person = ''
+      this.people.unshift(this.getPerson())
+      this.person = {}
     },
     fetchData () {
       const blockstack = this.blockstack
       blockstack.getFile(FRIEND_STORAGE_FILE) // decryption is enabled by default
       .then((peopleJSONBlob) => {
-        var people = JSON.parse(peopleJSONBlob || '[]')
-        console.log('fetched: ', peopleJSONBlob)
+        let people = JSON.parse(peopleJSONBlob || '[]')
         people.forEach(function (person, index) {
           person.id = index
         })
         this.uidCount = people.length
-        this.people = people
+        console.log('p:', people)
+        if (people.length) {
+          let inflatedPeople = people.map((p) => Person.fromJson(p))
+          this.people = inflatedPeople
+        }
       })
     },
     signOut () {
@@ -152,7 +157,7 @@ label {
   align-items: center;
   justify-content: start;
   cursor: pointer;
-  
+
   .delete {
     display: none;
   }

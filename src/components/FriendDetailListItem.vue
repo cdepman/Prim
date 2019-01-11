@@ -1,8 +1,7 @@
 <template>
   <div class="friend-detail" v-on:click="deselectFriend">
     <div class="friend-name">
-      {{ friend.name }}
-      {{ friend.id }}
+      {{ friend.fullName().toUpperCase() }}
     </div>
   </div>
 </template>

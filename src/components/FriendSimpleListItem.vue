@@ -1,6 +1,6 @@
 <template>
   <div class="friend" v-on:click="selectFriend">
-    {{ friend.name }}
+    {{ friend.fullName() }}
   </div>
 </template>
 

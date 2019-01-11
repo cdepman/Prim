@@ -22,12 +22,17 @@ export default class Person {
   }
 
   isComplete () {
-    this.requiredStrings.each((field) => {
-      if (this[field].length === 0) {
+    let that = this
+    return this.requiredStrings.every((field) => {
+      if (that[field].length === 0) {
         return false
       }
       return true
     })
+  }
+
+  static fromJson (json) {
+    return Object.assign(new Person(), json)
   }
 
   asJson () {
