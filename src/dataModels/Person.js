@@ -4,13 +4,14 @@ export default class Person {
     this.firstName = ''
     this.lastName = ''
     this.middleName = ''
+    this.significantDates = {}
     this.interests = {}
     this.favoriteFoods = {}
     this.favoriteMediaTypes = {}
     this.favoriteActivities = {}
     this.familiarPlaces = {}
     this.familiarFaces = {}
-    this.requiredStrings = ['firstName', 'lastName']
+    this.requiredFields = ['firstName', 'lastName']
   }
 
   fullName () {
@@ -22,13 +23,19 @@ export default class Person {
   }
 
   isComplete () {
-    let that = this
-    return this.requiredStrings.every((field) => {
-      if (that[field].length === 0) {
+    return this.requiredFields.every((field) => {
+      const value = this[field]
+      if (typeof value === 'string' && value.length === 0) {
+        return false
+      }
+      if (typeof value === 'object' && Object.keys(value).length === 0) {
+        return false
+      }
+      if (Array.isArray(value) && value.length === 0) {
         return false
       }
       return true
-    })
+    }, this)
   }
 
   static fromJson (json) {

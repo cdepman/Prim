@@ -1,8 +1,14 @@
 <template>
   <div class="friend-detail" v-on:click="deselectFriend">
-    <div class="friend-name">
+    <div class="friend friend-name">
       {{ friend.fullName().toUpperCase() }}
     </div>
+    <div class="friend">
+      age: {{ friend.age }}
+    </div>
+    <button class="edit">
+      edit
+    </button>
   </div>
 </template>
 
@@ -24,7 +30,10 @@ export default {
   background: lavenderblush;
   width: 100%;
 }
-.friend-name {
+.edit {
+  align-self: flex-end;
+}
+.friend {
   margin-left: 10px;
 }
 </style>
