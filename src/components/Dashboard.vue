@@ -72,7 +72,6 @@ export default {
   data () {
     return {
       people: [],
-      uidCount: 0,
       selectedId: null,
       blockstack: window.blockstack,
       person: {}
@@ -102,26 +101,27 @@ export default {
       this.selectedId = null
     },
     getPerson () {
+      this.person.id = this.getNextPersonId()
       return Object.assign(new Person(), this.person)
     },
     addPerson () {
-      if (!this.getPerson().isComplete()) {
+      let personToAdd = this.getPerson()
+      if (!personToAdd.isComplete()) {
         console.log('person data incomplete')
         return
       }
-      this.people.unshift(this.getPerson())
+      this.people.unshift(personToAdd)
       this.person = {}
+    },
+    getNextPersonId () {
+      let max = Math.max(...this.people.map((person) => person.id))
+      return max + 1
     },
     fetchData () {
       const blockstack = this.blockstack
       blockstack.getFile(FRIEND_STORAGE_FILE) // decryption is enabled by default
       .then((peopleJSONBlob) => {
         let people = JSON.parse(peopleJSONBlob || '[]')
-        people.forEach(function (person, index) {
-          person.id = index
-        })
-        this.uidCount = people.length
-        console.log('p:', people)
         if (people.length) {
           let inflatedPeople = people.map((p) => Person.fromJson(p))
           this.people = inflatedPeople

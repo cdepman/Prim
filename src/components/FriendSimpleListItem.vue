@@ -1,6 +1,6 @@
 <template>
   <div class="friend" v-on:click="selectFriend">
-    {{ friend.fullName() }}
+    ▷ {{ friend.fullName() }}
   </div>
 </template>
 
@@ -23,7 +23,6 @@ export default {
 
 <style scoped>
 .friend {
-  margin-left: 10px;
   width: 100%;
 }
 .friend:hover {

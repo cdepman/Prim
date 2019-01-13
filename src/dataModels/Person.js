@@ -1,17 +1,18 @@
 export default class Person {
   constructor () {
-    this.firstName = ''
+    this.id = null
     this.firstName = ''
     this.lastName = ''
     this.middleName = ''
-    this.significantDates = {}
+    this.age = null
+    this.places = {}
+    this.dates = {}
     this.interests = {}
-    this.favoriteFoods = {}
-    this.favoriteMediaTypes = {}
-    this.favoriteActivities = {}
-    this.familiarPlaces = {}
-    this.familiarFaces = {}
-    this.requiredFields = ['firstName', 'lastName']
+    this.foods = {}
+    this.media = {}
+    this.activities = {}
+    this.people = {}
+    this.requiredFields = ['id', 'firstName', 'lastName']
   }
 
   fullName () {
