@@ -16,9 +16,16 @@
 </template>
 
 <script>
+import AuthenticationService from '../services/Authentication.js'
+
 export default {
   props: {
     user: Object
+  },
+  methods: {
+    signOut () {
+      AuthenticationService.signUserOut()
+    }
   }
 }
 </script>

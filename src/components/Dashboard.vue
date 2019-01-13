@@ -27,7 +27,7 @@
                     Add {{ person.firstName }} to your dossier
             </button>
           </span>
-          <ul class="list-group">
+          <draggable v-model="people" class="list-group">
             <div v-for="person in people"
                  class="list-group-item"
                  v-bind:friend="person"
@@ -44,7 +44,7 @@
                 @friendSelected="handleFriendSelected">
               </friend>
             </div>
-          </ul>
+          </draggable>
         </div>
       </div>
     </div>
@@ -52,16 +52,19 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 import Person from '../dataModels/Person.js'
 import FriendSimpleListItem from './FriendSimpleListItem.vue'
 import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
-const FRIEND_STORAGE_FILE = 'people1.json'
+import FriendStorageService from '../services/FriendStorage.js'
 
 const components = {
   friend: FriendSimpleListItem,
   pageHeader: PageHeader,
-  friendDetail: FriendDetailListItem
+  friendDetail: FriendDetailListItem,
+  draggable
 }
 
 export default {
@@ -73,7 +76,6 @@ export default {
     return {
       people: [],
       selectedId: null,
-      blockstack: window.blockstack,
       person: {}
     }
   },
@@ -81,8 +83,7 @@ export default {
   watch: {
     people: {
       handler: function (people) {
-        const blockstack = this.blockstack
-        return blockstack.putFile(FRIEND_STORAGE_FILE, JSON.stringify(people))
+        FriendStorageService.storeJSON(JSON.stringify(people))
       },
       deep: true
     }
@@ -98,6 +99,7 @@ export default {
       this.selectedId = selectedFriendId
     },
     handleFriendDeselected () {
+      console.log('Child has been deselected.')
       this.selectedId = null
     },
     getPerson () {
@@ -106,20 +108,17 @@ export default {
     },
     addPerson () {
       let personToAdd = this.getPerson()
-      if (!personToAdd.isComplete()) {
-        console.log('person data incomplete')
-        return
-      }
+      if (!personToAdd.isComplete()) return
       this.people.unshift(personToAdd)
       this.person = {}
     },
     getNextPersonId () {
-      let max = Math.max(...this.people.map((person) => person.id))
+      if (this.people.length === 0) return 0
+      let max = Math.max(...this.people.map((person) => person.id)) || 0
       return max + 1
     },
     fetchData () {
-      const blockstack = this.blockstack
-      blockstack.getFile(FRIEND_STORAGE_FILE) // decryption is enabled by default
+      FriendStorageService.fetchJSON()
       .then((peopleJSONBlob) => {
         let people = JSON.parse(peopleJSONBlob || '[]')
         if (people.length) {
@@ -127,9 +126,6 @@ export default {
           this.people = inflatedPeople
         }
       })
-    },
-    signOut () {
-      this.blockstack.signUserOut(window.location.href)
     }
   }
 }
@@ -146,7 +142,6 @@ input::placeholder {
 }
 label {
   margin-bottom: 0;
-  // width: 100%;
   cursor: pointer;
   input[type="checkbox"] {
     margin-right: 5px;

@@ -27,7 +27,6 @@ export default {
 
 <style scoped>
 .friend-detail {
-  background: lavenderblush;
   width: 100%;
   margin-left: 1px;
 }

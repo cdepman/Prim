@@ -25,7 +25,4 @@ export default {
 .friend {
   width: 100%;
 }
-.friend:hover {
-  background-color: aliceblue;
-}
 </style>
