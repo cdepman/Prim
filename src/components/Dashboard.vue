@@ -3,9 +3,40 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
-          <page-header v-bind:user="user">
-          </page-header>
-          <div class="input-group">
+          <page-header v-bind:user="user"></page-header>
+          <v-card dark>
+            <v-card-title>
+              Friends
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              :headers="headers"
+              :items="people"
+              :search="search"
+              hide-actions
+            >
+              <template slot="items" slot-scope="props">
+                <td>{{ props.item.fullName() }}</td>
+                <td class="text-xs-right">{{ props.item.age }}</td>
+              </template>
+              <template slot="no-data">
+                <v-alert :value="true" color="error" icon="warning">
+                  Sorry, nothing to display here :(
+                </v-alert>
+              </template>
+              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                Your search for "{{ search }}" found no results.
+              </v-alert>
+            </v-data-table>
+          </v-card>
+          <!-- <div class="input-group">
             <input v-on:keyup.enter="addPerson"
                    v-model="person.firstName"
                    type="text"
@@ -44,7 +75,7 @@
                 @friendSelected="handleFriendSelected">
               </friend>
             </div>
-          </draggable>
+          </draggable> -->
         </div>
       </div>
     </div>
@@ -74,9 +105,19 @@ export default {
   },
   data () {
     return {
+      search: '',
       people: [],
       selectedId: null,
-      person: {}
+      person: {},
+      headers: [
+        {
+          text: 'Name',
+          align: 'left',
+          sortable: true,
+          value: 'firstName'
+        },
+        { value: 'lastName' }
+      ]
     }
   },
   components: components,
