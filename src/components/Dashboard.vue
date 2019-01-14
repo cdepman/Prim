@@ -1,83 +1,99 @@
 <template>
-  <div class="hello">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-          <page-header v-bind:user="user"></page-header>
-          <v-card dark>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <page-header v-bind:user="user"></page-header>
+      <v-card dark data-app>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="Search"
+          hide-details
+          class="search"
+        ></v-text-field>
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+          dark
+        >
+          <v-btn
+            slot="activator"
+            color="primary"
+            dark
+            class="mb-2"
+          >
+            New Person
+          </v-btn>
+          <v-card>
             <v-card-title>
-              Friends
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Search"
-                single-line
-                hide-details
-              ></v-text-field>
+              <span class="headline">
+                {{ formTitle }}
+              </span>
             </v-card-title>
-            <v-data-table
-              :headers="headers"
-              :items="people"
-              :search="search"
-              hide-actions
-            >
-              <template slot="items" slot-scope="props">
-                <td>{{ props.item.fullName() }}</td>
-                <td class="text-xs-right">{{ props.item.age }}</td>
-              </template>
-              <template slot="no-data">
-                <v-alert :value="true" color="error" icon="warning">
-                  Sorry, nothing to display here :(
-                </v-alert>
-              </template>
-              <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                Your search for "{{ search }}" found no results.
-              </v-alert>
-            </v-data-table>
+
+            <v-card-text>
+              <v-layout justify-center column fill-height>
+                  <v-text-field
+                    v-model="person.firstName"
+                    label="First Name"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="person.lastName"
+                    label="Last Name"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="person.fat"
+                    label="Birthdate"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="person.carbs"
+                    label="Middle Name"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="person.protein"
+                    label="Meeting Context"
+                  ></v-text-field>
+              </v-layout>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click="closeDialog"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click="addPerson"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
           </v-card>
-          <!-- <div class="input-group">
-            <input v-on:keyup.enter="addPerson"
-                   v-model="person.firstName"
-                   type="text"
-                   class="form-control"
-                   placeholder="First Name"
-                   autofocus>
-            <input v-on:keyup.enter="addPerson"
-                   v-model="person.lastName"
-                   type="text"
-                   class="form-control"
-                   placeholder="Last Name"
-                   autofocus>
-          </div>
-          <span class="input-group-btn">
-            <button v-if="person.firstName"
-                    class="btn btn-default"
-                    v-on:click="addPerson"
-                    :disabled="! person">
-                    Add {{ person.firstName }} to your dossier
-            </button>
-          </span>
-          <draggable v-model="people" class="list-group">
-            <div v-for="person in people"
-                 class="list-group-item"
-                 v-bind:friend="person"
-                 :key="person.id">
-              <friend-detail
-                v-if="selectedId === person.id"
-                v-bind:friend="person"
-                @friendDeselected="handleFriendDeselected">
-              </friend-detail>
-              <friend
-                v-else
-                v-bind:friend="person"
-                @created="handleCreate"
-                @friendSelected="handleFriendSelected">
-              </friend>
-            </div>
-          </draggable> -->
-        </div>
-      </div>
+        </v-dialog>
+        <v-data-table
+          :headers="headers"
+          :items="people"
+          :search="search"
+          hide-actions
+        >
+          <template slot="items" slot-scope="props">
+            <td>{{ props.item.fullName() }}</td>
+            <td class="text-xs-right">{{ props.item.age }}</td>
+          </template>
+          <template slot="no-data">
+            <v-alert :value="true" color="error" icon="warning">
+              Sorry, nothing to display here :(
+            </v-alert>
+          </template>
+          <v-alert slot="no-results" :value="true" color="error" icon="warning">
+            Your search for "{{ search }}" found no results.
+          </v-alert>
+        </v-data-table>
+      </v-card>
     </div>
   </div>
 </template>
@@ -105,6 +121,8 @@ export default {
   },
   data () {
     return {
+      dialog: false,
+      editedIndex: -1,
       search: '',
       people: [],
       selectedId: null,
@@ -120,6 +138,11 @@ export default {
       ]
     }
   },
+  computed: {
+    formTitle: function () {
+      return this.editedIndex === -1 ? 'New Entry' : 'Edit Entry'
+    }
+  },
   components: components,
   watch: {
     people: {
@@ -127,6 +150,9 @@ export default {
         FriendStorageService.storeJSON(JSON.stringify(people))
       },
       deep: true
+    },
+    dialog (val) {
+      val || this.closeDialog()
     }
   },
   mounted () {
@@ -145,13 +171,18 @@ export default {
     },
     getPerson () {
       this.person.id = this.getNextPersonId()
+      this.person.dateAdded = new Date()
       return Object.assign(new Person(), this.person)
+    },
+    closeDialog () {
+      this.dialog = false
     },
     addPerson () {
       let personToAdd = this.getPerson()
       if (!personToAdd.isComplete()) return
       this.people.unshift(personToAdd)
       this.person = {}
+      this.closeDialog()
     },
     getNextPersonId () {
       if (this.people.length === 0) return 0
@@ -181,6 +212,12 @@ input::placeholder {
 .input-group {
   width: 100%;
 }
+
+.search {
+  margin: 10px;
+  padding-top: 18px;
+}
+
 label {
   margin-bottom: 0;
   cursor: pointer;

@@ -3,8 +3,11 @@
     <div class="friend friend-name">
       ▶︎ {{ friend.fullName() }}
     </div>
-    <div class="friend">
+    <div>
       age: {{ friend.age }}
+    </div>
+    <div v-for="item in friend.interests" :key="item.id">
+      <div> {{ item.description }} </div>
     </div>
     <button class="edit">
       edit

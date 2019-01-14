@@ -4,6 +4,8 @@ export default class Person {
     this.firstName = ''
     this.lastName = ''
     this.middleName = ''
+    this.dateAdded = ''
+    this.dateUpdated = ''
     this.age = null
     this.places = {}
     this.dates = {}

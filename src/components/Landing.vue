@@ -1,7 +1,7 @@
 <template>
   <div class="welcome">
     <div>
-      <h1>Pungyo PRM</h1>
+      <h1>Prim</h1>
       <p>A decentralized PRM built on <a href="https://blockstack.org" target="_blank">Blockstack</a></p>
       <button class="btn btn-default" @click.prevent="signIn">Sign In With Blockstack</button>
     </div>

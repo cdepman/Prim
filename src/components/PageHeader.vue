@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-header">Pungyo PRM
+    <h1 class="page-header">Prim
       <img :src="user.avatarUrl() ? user.avatarUrl() : '/avatar-placeholder.png'" class="avatar">
       <small><span class="sign-out">(<a href="#" @click.prevent="signOut">Sign Out</a>)</span></small>
     </h1>
