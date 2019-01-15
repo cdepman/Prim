@@ -80,7 +80,18 @@
           dark
           class="mb-2"
           v-on:click="triggerQrShow"
-        >Generate QR</v-btn>
+        >Generate Code</v-btn>
+        <div class="upload-btn-wrapper">
+          <v-btn
+            slot="activator"
+            color="primary"
+            dark
+            class="mb-2"
+          >
+            Scan Code
+          </v-btn>
+        <input type="file">
+      </div>
         <v-data-table
           :headers="headers"
           :items="people"
@@ -262,5 +273,20 @@ label {
       color: red;
     }
   }
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-bottom: -22px;
+}
+
+.upload-btn-wrapper input[type=file] {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }
 </style>
