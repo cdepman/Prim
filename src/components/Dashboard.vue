@@ -284,6 +284,7 @@ label {
 
 .upload-btn-wrapper input[type=file] {
   cursor: pointer;
+  font-size: 40px;
   position: absolute;
   left: 0;
   top: 0;

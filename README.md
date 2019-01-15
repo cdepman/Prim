@@ -20,3 +20,13 @@ npm run build --report
 ```
 
 
+**TODO**:
+* Capture QR file and extract JSON data
+  * Create users from Data
+* Add Edit Feature For Members
+* Find Good Free Font for Title
+  * Ask Fahad
+
+**WISHLIST:
+* Choose your own provider for encrypted storage
+  * Azure, Aws, Google Cloud, Digital Ocean, etc.
