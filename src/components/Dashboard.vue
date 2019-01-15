@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <page-header v-bind:user="user"></page-header>
-      <qr v-bind:qrContents="qrContents"></qr>
+      <qr v-on:hideQR="this.hideQR" v-bind="{ qrContents, showQR }"></qr>
       <v-card dark data-app>
         <v-text-field
           v-model="search"
@@ -75,6 +75,12 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-btn
+          color="primary"
+          dark
+          class="mb-2"
+          v-on:click="triggerQrShow"
+        >Generate QR</v-btn>
         <v-data-table
           :headers="headers"
           :items="people"
@@ -128,6 +134,7 @@ export default {
       editedIndex: -1,
       search: '',
       people: [],
+      showQR: false,
       selectedId: null,
       person: {},
       headers: [
@@ -194,6 +201,12 @@ export default {
       if (this.people.length === 0) return 0
       let max = Math.max(...this.people.map((person) => person.id)) || 0
       return max + 1
+    },
+    hideQR () {
+      this.showQR = false
+    },
+    triggerQrShow () {
+      this.showQR = true
     },
     fetchData () {
       FriendStorageService.fetchJSON()

@@ -1,53 +1,95 @@
 <template>
-  <div>
-    <v-btn
-      color="primary"
-      dark
-      class="mb-2"
-      v-on:click="drawQRCode"
-    >Generate QR Code</v-btn>
-    <canvas id="qr_canvas"></canvas>
-  </div>
+  <v-layout
+    row
+    justify-center
+  >
+    <v-dialog
+      v-model="showQR"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-btn
+            icon
+            dark
+            v-on:click="hide"
+          >
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              dark
+              flat
+              v-on:click="hide"
+            >
+              Close
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <canvas id="qr_canvas"></canvas>
+      </v-card>
+    </v-dialog>
+  </v-layout>
 </template>
 
 <script>
 import QRCode from 'qrcode'
+import { sha256 } from 'js-sha256'
 
 export default {
   props: {
-    qrContents: String
+    qrContents: String,
+    showQR: Boolean
+  },
+  computed: {
+    buttonText: function () {
+      return this.showQR ? 'Hide' : 'Show'
+    }
+  },
+  watch: {
+    showQR: function (newVal, oldVal) {
+      if (newVal === true) {
+        this.drawQRCode()
+      } else {
+        this.hide()
+      }
+    }
   },
   methods: {
     drawQRCode: function () {
+      console.log('drawQRCode?!?!?')
       const canvas = document.getElementById('qr_canvas')
-      QRCode.toCanvas(canvas, this.qrContents, function (error) {
+      const options = {
+        color: {
+          dark: '#003366'
+        },
+        width: window.innerWidth
+      }
+      QRCode.toCanvas(canvas, this.stampedContents(), options, error => {
         if (error) console.error(error)
         console.log('qr draw success! 🎉')
       })
+    },
+    stampedContents: function () {
+      return this.qrContents + `[[[{${sha256(this.qrContents)}^_^${Date.now()}]]]`
+    },
+    hide: function () {
+      console.log('HELLOW')
+      this.$emit('hideQR')
     }
   }
 }
 </script>
 
 <style scoped>
-.friend-detail {
+#qr_canvas {
   width: 100%;
-  margin-left: 1px;
 }
-.edit {
-  align-self: flex-end;
-}
-</style>
-
-  const QRCode = require('qrcode')
-  const canvas = document.getElementById('qr_canvas')
-  
-  QRCode.toCanvas(canvas, 'sample text', function (error) {
-    if (error) console.error(error)
-    console.log('success!');
-  })
-</script>
-
-<style scoped>
-
 </style>
