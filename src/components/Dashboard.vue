@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <page-header v-bind:user="user"></page-header>
+      <qr v-bind:qrContents="qrContents"></qr>
       <v-card dark data-app>
         <v-text-field
           v-model="search"
@@ -106,11 +107,13 @@ import FriendSimpleListItem from './FriendSimpleListItem.vue'
 import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
 import FriendStorageService from '../services/FriendStorage.js'
+import QR from '../components/QR.vue'
 
 const components = {
   friend: FriendSimpleListItem,
   pageHeader: PageHeader,
   friendDetail: FriendDetailListItem,
+  qr: QR,
   draggable
 }
 
@@ -141,6 +144,9 @@ export default {
   computed: {
     formTitle: function () {
       return this.editedIndex === -1 ? 'New Entry' : 'Edit Entry'
+    },
+    qrContents: function () {
+      return JSON.stringify(this.people)
     }
   },
   components: components,
