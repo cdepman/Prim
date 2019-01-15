@@ -64,7 +64,6 @@ export default {
   },
   methods: {
     drawQRCode: function () {
-      console.log('drawQRCode?!?!?')
       const canvas = document.getElementById('qr_canvas')
       const options = {
         color: {
@@ -81,7 +80,6 @@ export default {
       return this.qrContents + `[[[{${sha256(this.qrContents)}^_^${Date.now()}]]]`
     },
     hide: function () {
-      console.log('HELLOW')
       this.$emit('hideQR')
     }
   }

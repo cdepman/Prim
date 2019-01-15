@@ -3,6 +3,7 @@
     <div class="col-md-8 col-md-offset-2">
       <page-header v-bind:user="user"></page-header>
       <qr v-on:hideQR="this.hideQR" v-bind="{ qrContents, showQR }"></qr>
+      <input id="qr_upload" type="file">
       <v-card dark data-app>
         <v-text-field
           v-model="search"
@@ -87,10 +88,10 @@
             color="primary"
             dark
             class="mb-2"
+            v-on:click="scanQR"
           >
             Scan Code
           </v-btn>
-        <input type="file">
       </div>
         <v-data-table
           :headers="headers"
@@ -183,6 +184,10 @@ export default {
     this.fetchData()
   },
   methods: {
+    scanQR: function () {
+      console.log('scanQr')
+      document.getElementById('qr_upload').click()
+    },
     handleCreate () {
       console.log('Child has been created.')
     },
@@ -273,6 +278,10 @@ label {
       color: red;
     }
   }
+}
+
+#qr_upload {
+  display: none;
 }
 
 .upload-btn-wrapper {
