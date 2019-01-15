@@ -1,4 +1,4 @@
-# Pungyo App
+# Prim App
 
 > A Personal Relationship Manager app built on Vue.js and the decentralized web through blockstack.
 
