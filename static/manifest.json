@@ -1,6 +1,6 @@
 {
   "name": "Prim",
-  "start_url": "http://charlied.xyz",
+  "start_url": "http://prim.space",
   "description": "A Personal Relationship Manager app built on Vue.js and the decentralized web through blockstack.",
   "icons": [{
     "src": "./placholder.png",
