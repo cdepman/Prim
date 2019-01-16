@@ -2,6 +2,8 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <page-header v-bind:user="user"></page-header>
+      <qr v-on:hideQR="this.hideQR" v-bind="{ qrContents, showQR }"></qr>
+      <input id="qr_upload" type="file">
       <v-card dark data-app>
         <v-text-field
           v-model="search"
@@ -74,6 +76,23 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-btn
+          color="primary"
+          dark
+          class="mb-2"
+          v-on:click="triggerQrShow"
+        >Generate Code</v-btn>
+        <div class="upload-btn-wrapper">
+          <v-btn
+            slot="activator"
+            color="primary"
+            dark
+            class="mb-2"
+            v-on:click="scanQR"
+          >
+            Scan Code
+          </v-btn>
+      </div>
         <v-data-table
           :headers="headers"
           :items="people"
@@ -106,11 +125,13 @@ import FriendSimpleListItem from './FriendSimpleListItem.vue'
 import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
 import FriendStorageService from '../services/FriendStorage.js'
+import QR from '../components/QR.vue'
 
 const components = {
   friend: FriendSimpleListItem,
   pageHeader: PageHeader,
   friendDetail: FriendDetailListItem,
+  qr: QR,
   draggable
 }
 
@@ -125,6 +146,7 @@ export default {
       editedIndex: -1,
       search: '',
       people: [],
+      showQR: false,
       selectedId: null,
       person: {},
       headers: [
@@ -141,6 +163,9 @@ export default {
   computed: {
     formTitle: function () {
       return this.editedIndex === -1 ? 'New Entry' : 'Edit Entry'
+    },
+    qrContents: function () {
+      return JSON.stringify(this.people)
     }
   },
   components: components,
@@ -159,6 +184,10 @@ export default {
     this.fetchData()
   },
   methods: {
+    scanQR: function () {
+      console.log('scanQr')
+      document.getElementById('qr_upload').click()
+    },
     handleCreate () {
       console.log('Child has been created.')
     },
@@ -188,6 +217,12 @@ export default {
       if (this.people.length === 0) return 0
       let max = Math.max(...this.people.map((person) => person.id)) || 0
       return max + 1
+    },
+    hideQR () {
+      this.showQR = false
+    },
+    triggerQrShow () {
+      this.showQR = true
     },
     fetchData () {
       FriendStorageService.fetchJSON()
@@ -243,5 +278,25 @@ label {
       color: red;
     }
   }
+}
+
+#qr_upload {
+  display: none;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-bottom: -22px;
+}
+
+.upload-btn-wrapper input[type=file] {
+  cursor: pointer;
+  font-size: 40px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }
 </style>

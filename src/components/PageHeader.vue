@@ -1,15 +1,14 @@
 <template>
   <div>
     <h1 class="page-header">Prim
-      <img :src="user.avatarUrl() ? user.avatarUrl() : '/avatar-placeholder.png'" class="avatar">
-      <small><span class="sign-out">(<a href="#" @click.prevent="signOut">Sign Out</a>)</span></small>
+      <span class="sign-out">(<a href="#" @click.prevent="signOut">Sign Out</a>)</span>
     </h1>
     <h2 class="user-info">
       <small>
-        {{ user.name() ? user.name() : 'Anonymous Person' }}'s People
+        {{ user.name() ? user.name() : 'Anonymous User' }}
       </small>
       <small class="pull-right">
-      {{ user.username ? user.username : user.identityAddress }}
+        Powered by <a href="https://blockstack.org">blockstack</a>
       </small>
     </h2>
   </div>
