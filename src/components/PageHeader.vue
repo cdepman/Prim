@@ -7,9 +7,6 @@
       <small>
         {{ user.name() ? user.name() : 'Anonymous User' }}
       </small>
-      <small class="pull-right">
-        Powered by <a href="https://blockstack.org">blockstack</a>
-      </small>
     </h2>
   </div>
 </template>

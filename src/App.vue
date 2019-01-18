@@ -2,9 +2,8 @@
   <div id="app">
     <landing v-if="! blockstack.isUserSignedIn()"></landing>
     <dashboard v-if="user" :user="user"></dashboard>
-
     <small class="creds">
-      Source code on <a href="https://github.com/<placeholder>" target="_blank">Github</a>
+        Powered by <a href="https://blockstack.org">blockstack</a>
     </small>
   </div>
 </template>

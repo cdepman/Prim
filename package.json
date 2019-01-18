@@ -20,10 +20,12 @@
     "sass-loader": "^6.0.7",
     "vue": "^2.5.18",
     "vue-router": "^2.3.1",
+    "vue-webrtc": "^1.0.0",
     "vuedraggable": "^2.17.0",
     "vuetify": "^1.4.1"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.6.3",
     "autoprefixer": "^6.7.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",

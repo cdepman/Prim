@@ -1,9 +1,10 @@
 <template>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+  <v-content>
+    <v-container fluid>
       <page-header v-bind:user="user"></page-header>
-      <qr v-on:hideQR="this.hideQR" v-bind="{ qrContents, showQR }"></qr>
-      <input id="qr_upload" type="file">
+      <qr-show v-on:hideQR="this.hideQR" v-bind="{ qrContents, showQR }"></qr-show>
+      <qr-read></qr-read>
+      <webrtc></webrtc>
       <v-card dark data-app>
         <v-text-field
           v-model="search"
@@ -43,16 +44,12 @@
                     label="Last Name"
                   ></v-text-field>
                   <v-text-field
-                    v-model="person.fat"
+                    v-model="person.birthdate"
                     label="Birthdate"
                   ></v-text-field>
                   <v-text-field
-                    v-model="person.carbs"
+                    v-model="person.middleName"
                     label="Middle Name"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="person.protein"
-                    label="Meeting Context"
                   ></v-text-field>
               </v-layout>
             </v-card-text>
@@ -101,7 +98,9 @@
         >
           <template slot="items" slot-scope="props">
             <td>{{ props.item.fullName() }}</td>
-            <td class="text-xs-right">{{ props.item.age }}</td>
+            <td class="text-xs-right">
+              <i class="fas fa-pencil-alt edit-icon"></i>
+            </td>
           </template>
           <template slot="no-data">
             <v-alert :value="true" color="error" icon="warning">
@@ -113,26 +112,27 @@
           </v-alert>
         </v-data-table>
       </v-card>
-    </div>
-  </div>
+    </v-container>
+  </v-content>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-
 import Person from '../dataModels/Person.js'
 import FriendSimpleListItem from './FriendSimpleListItem.vue'
 import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
 import FriendStorageService from '../services/FriendStorage.js'
-import QR from '../components/QR.vue'
+import QRShow from './QRShow.vue'
+import QRRead from './QRRead.vue'
+import WebRTC from './WebRTC.vue'
 
 const components = {
   friend: FriendSimpleListItem,
   pageHeader: PageHeader,
   friendDetail: FriendDetailListItem,
-  qr: QR,
-  draggable
+  qrShow: QRShow,
+  qrRead: QRRead,
+  webrtc: WebRTC
 }
 
 export default {
@@ -280,15 +280,15 @@ label {
   }
 }
 
-#qr_upload {
-  display: none;
-}
-
 .upload-btn-wrapper {
   position: relative;
   overflow: hidden;
   display: inline-block;
   margin-bottom: -22px;
+}
+
+.edit-icon:hover {
+  color: black;
 }
 
 .upload-btn-wrapper input[type=file] {
