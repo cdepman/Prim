@@ -1,46 +1,59 @@
 <template>
-  <v-content>
-    <v-container fluid>
-      <page-header v-bind:user="user"></page-header>
-      <qr-show v-on:hideQR="this.hideQR" v-bind="{ qrContents, showQR }"></qr-show>
-      <qr-read></qr-read>
-      <webrtc></webrtc>
-      <v-card dark data-app>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          hide-details
-          class="search"
-        ></v-text-field>
-        <v-data-table
-          :headers="headers"
-          :items="people"
-          :search="search"
-          sort-icon="mdi-sort-alphabetical"
-          hide-actions
+  <v-app>
+    <v-content>
+      <v-container fluid>
+        <page-header v-bind:user="user"></page-header>
+        <qr-show v-on:hideQR="showQR = false" v-bind="{ qrContents, showQR }"></qr-show>
+        <qr-read></qr-read>
+        <webrtc></webrtc>
+        <add-friend-dialog
+          v-bind="{ person, showAddFriendDialog }"
+          v-on:addPerson="this.addPerson"
+          v-on:hideAddFriendDialog="showAddFriendDialog = false"
         >
-          <template slot="headers" slot-scope="props">
+        </add-friend-dialog>
+        <v-card dark data-app>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            hide-details
+            class="search"
+          ></v-text-field>
+          <v-data-table
+            :headers="headers"
+            :items="people"
+            :search="search"
+            sort-icon="mdi-sort-alphabetical"
+            hide-actions
+          >
+            <template slot="headers" slot-scope="props">
 
-          </template>
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.fullName() }}</td>
-            <td class="text-xs-right">
-              <i class="fas fa-pencil-alt edit-icon"></i>
-            </td>
-          </template>
-          <template slot="no-data">
-            <v-alert :value="true" color="error" icon="warning">
-              Sorry, nothing to display here :(
+            </template>
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.fullName() }}</td>
+              <td class="text-xs-right">
+                <i class="fas fa-pencil-alt edit-icon"></i>
+              </td>
+            </template>
+            <template slot="no-data">
+              <v-alert :value="true" color="error" icon="warning">
+                Sorry, nothing to display here :(
+              </v-alert>
+            </template>
+            <v-alert slot="no-results" :value="true" color="error" icon="warning">
+              Your search for "{{ search }}" found no results.
             </v-alert>
-          </template>
-          <v-alert slot="no-results" :value="true" color="error" icon="warning">
-            Your search for "{{ search }}" found no results.
-          </v-alert>
-        </v-data-table>
-      </v-card>
-    </v-container>
-  </v-content>
+          </v-data-table>
+        </v-card>
+      </v-container>
+    </v-content>
+    <navigation
+      v-on:showAddFriendDialog="showAddFriendDialog = true"
+      v-on:showQR="showQR = true"
+      v-on:scanQR="this.scanQR"
+    ></navigation>
+  </v-app>
 </template>
 
 <script>
@@ -52,6 +65,8 @@ import FriendStorageService from '../services/FriendStorage.js'
 import QRShow from './QRShow.vue'
 import QRRead from './QRRead.vue'
 import WebRTC from './WebRTC.vue'
+import AddFriendDialog from './AddFriendDialog.vue'
+import Navigation from './Navigation.vue'
 
 const components = {
   friend: FriendSimpleListItem,
@@ -59,7 +74,9 @@ const components = {
   friendDetail: FriendDetailListItem,
   qrShow: QRShow,
   qrRead: QRRead,
-  webrtc: WebRTC
+  webrtc: WebRTC,
+  AddFriendDialog,
+  Navigation
 }
 
 export default {
@@ -69,7 +86,7 @@ export default {
   },
   data () {
     return {
-      dialog: false,
+      showAddFriendDialog: false,
       editedIndex: -1,
       search: '',
       people: [],
@@ -100,9 +117,6 @@ export default {
         FriendStorageService.storeJSON(JSON.stringify(people))
       },
       deep: true
-    },
-    dialog (val) {
-      val || this.closeDialog()
     }
   },
   mounted () {
@@ -128,26 +142,25 @@ export default {
       this.person.dateAdded = new Date()
       return Object.assign(new Person(), this.person)
     },
-    closeDialog () {
-      this.dialog = false
+    openDialog () {
+      this.showAddFriendDialog = true
     },
-    addPerson () {
-      let personToAdd = this.getPerson()
-      if (!personToAdd.isComplete()) return
-      this.people.unshift(personToAdd)
-      this.person = {}
-      this.closeDialog()
+    closeDialog () {
+      this.showAddFriendDialog = false
+    },
+    addPerson (person) {
+      console.log('ADD PERSON: ', person)
+      return
+      // let personToAdd = this.getPerson()
+      // if (!personToAdd.isComplete()) return
+      // this.people.unshift(personToAdd)
+      // this.person = {}
+      // this.closeDialog()
     },
     getNextPersonId () {
       if (this.people.length === 0) return 0
       let max = Math.max(...this.people.map((person) => person.id)) || 0
       return max + 1
-    },
-    hideQR () {
-      this.showQR = false
-    },
-    triggerQrShow () {
-      this.showQR = true
     },
     fetchData () {
       FriendStorageService.fetchJSON()

@@ -4,10 +4,7 @@
 
 <script>
   export default {
-    name: 'qr upload',
-    data () {
-      return {}
-    },
+    name: 'qr-upload',
     methods: {
       previewFiles (event) {
         console.log(event.target.files)

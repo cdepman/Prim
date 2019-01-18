@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    v-model="showAddFriendDialog"
     max-width="500px"
     dark
   >
@@ -37,14 +37,14 @@
         <v-btn
           color="blue darken-1"
           flat
-          @click="closeDialog"
+          @click="$emit('hideAddFriendDialog')"
         >
           Cancel
         </v-btn>
         <v-btn
           color="blue darken-1"
           flat
-          @click="addPerson"
+          @click="$emit('addPerson', person)"
         >
           Save
         </v-btn>
@@ -52,3 +52,16 @@
     </v-card>
   </v-dialog>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      formTitle: 'Add Friend'
+    }
+  },
+  props: {
+    showAddFriendDialog: Boolean,
+    person: Object
+  }
+}
+</script>

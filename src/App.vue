@@ -2,7 +2,6 @@
   <v-app id="app" dark>
     <landing v-if="! blockstack.isUserSignedIn()"></landing>
     <dashboard v-if="user" :user="user"></dashboard>
-    <navigation></navigation>
   </v-app>
 </template>
 
@@ -10,11 +9,10 @@
 
 import Landing from './components/Landing.vue'
 import Dashboard from './components/Dashboard.vue'
-import Navigation from './components/Navigation.vue'
 
 export default {
   name: 'app',
-  components: { Landing, Dashboard, Navigation },
+  components: { Landing, Dashboard },
   mounted () {
     const blockstack = this.blockstack
     if (blockstack.isUserSignedIn()) {

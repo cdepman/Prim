@@ -9,30 +9,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card>
-        <v-toolbar
-          dark
-          color="primary"
-        >
-          <v-btn
-            icon
-            dark
-            v-on:click="hide"
-          >
-            <v-icon>close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Settings</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn
-              dark
-              flat
-              v-on:click="hide"
-            >
-              Close
-            </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
+      <v-card color="#003366" class="qr-container" v-on:click="$emit('hideQR')">
         <canvas id="qr_canvas"></canvas>
       </v-card>
     </v-dialog>
@@ -58,7 +35,7 @@ export default {
       if (newVal === true) {
         this.drawQRCode()
       } else {
-        this.hide()
+        this.$emit('hideQR')
       }
     }
   },
@@ -78,9 +55,6 @@ export default {
     },
     stampedContents: function () {
       return this.qrContents + `[[[{${sha256(this.qrContents)}^_^${Date.now()}]]]`
-    },
-    hide: function () {
-      this.$emit('hideQR')
     }
   }
 }
@@ -89,5 +63,9 @@ export default {
 <style scoped>
 #qr_canvas {
   width: 100%;
+}
+.qr-container {
+  display: flex;
+  align-items: center;
 }
 </style>
