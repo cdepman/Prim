@@ -58,8 +58,6 @@
 
 <script>
 import Person from '../dataModels/Person.js'
-import FriendSimpleListItem from './FriendSimpleListItem.vue'
-import FriendDetailListItem from './FriendDetailListItem.vue'
 import PageHeader from './PageHeader.vue'
 import FriendStorageService from '../services/FriendStorage.js'
 import QRShow from './QRShow.vue'
@@ -69,12 +67,10 @@ import AddFriendDialog from './AddFriendDialog.vue'
 import Navigation from './Navigation.vue'
 
 const components = {
-  friend: FriendSimpleListItem,
-  pageHeader: PageHeader,
-  friendDetail: FriendDetailListItem,
-  qrShow: QRShow,
-  qrRead: QRRead,
-  webrtc: WebRTC,
+  PageHeader,
+  QRShow,
+  QRRead,
+  WebRTC,
   AddFriendDialog,
   Navigation
 }
