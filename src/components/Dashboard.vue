@@ -13,89 +13,16 @@
           hide-details
           class="search"
         ></v-text-field>
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
-          dark
-        >
-          <v-btn
-            slot="activator"
-            color="primary"
-            dark
-            class="mb-2"
-          >
-            New Person
-          </v-btn>
-          <v-card>
-            <v-card-title>
-              <span class="headline">
-                {{ formTitle }}
-              </span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-layout justify-center column fill-height>
-                  <v-text-field
-                    v-model="person.firstName"
-                    label="First Name"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="person.lastName"
-                    label="Last Name"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="person.birthdate"
-                    label="Birthdate"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="person.middleName"
-                    label="Middle Name"
-                  ></v-text-field>
-              </v-layout>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                flat
-                @click="closeDialog"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                flat
-                @click="addPerson"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-btn
-          color="primary"
-          dark
-          class="mb-2"
-          v-on:click="triggerQrShow"
-        >Generate Code</v-btn>
-        <div class="upload-btn-wrapper">
-          <v-btn
-            slot="activator"
-            color="primary"
-            dark
-            class="mb-2"
-            v-on:click="scanQR"
-          >
-            Scan Code
-          </v-btn>
-      </div>
         <v-data-table
           :headers="headers"
           :items="people"
           :search="search"
+          sort-icon="mdi-sort-alphabetical"
           hide-actions
         >
+          <template slot="headers" slot-scope="props">
+
+          </template>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.fullName() }}</td>
             <td class="text-xs-right">
@@ -151,8 +78,6 @@ export default {
       person: {},
       headers: [
         {
-          text: 'Name',
-          align: 'left',
           sortable: true,
           value: 'firstName'
         },

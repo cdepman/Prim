@@ -10,7 +10,7 @@ window.blockstack = require('blockstack')
 window.axios = require('axios')
 
 Vue.config.productionTip = false
-Vue.use(Vuetify, { iconfont: 'fa4' })
+Vue.use(Vuetify, { iconfont: ['fa4', 'mdi'] })
 Vue.use(WebRTC)
 
 /* eslint-disable no-new */

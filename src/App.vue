@@ -1,21 +1,20 @@
 <template>
-  <div id="app">
+  <v-app id="app" dark>
     <landing v-if="! blockstack.isUserSignedIn()"></landing>
     <dashboard v-if="user" :user="user"></dashboard>
-    <small class="creds">
-        Powered by <a href="https://blockstack.org">blockstack</a>
-    </small>
-  </div>
+    <navigation></navigation>
+  </v-app>
 </template>
 
 <script>
 
 import Landing from './components/Landing.vue'
 import Dashboard from './components/Dashboard.vue'
+import Navigation from './components/Navigation.vue'
 
 export default {
   name: 'app',
-  components: { Landing, Dashboard },
+  components: { Landing, Dashboard, Navigation },
   mounted () {
     const blockstack = this.blockstack
     if (blockstack.isUserSignedIn()) {
