@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" dark>
+  <v-app dark style="overflow: hidden">
     <landing v-if="! blockstack.isUserSignedIn()"></landing>
     <dashboard v-if="user" :user="user"></dashboard>
   </v-app>
