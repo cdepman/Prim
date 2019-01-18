@@ -3,9 +3,9 @@
     <v-content>
       <v-container fluid>
         <page-header v-bind:user="user"></page-header>
-        <qr-show v-on:hideQR="showQR = false" v-bind="{ qrContents, showQR }"></qr-show>
-        <qr-read></qr-read>
-        <webrtc></webrtc>
+        <q-r-show v-on:hideQR="showQR = false" v-bind="{ qrContents, showQR }"></q-r-show>
+        <q-r-read></q-r-read>
+        <web-r-t-c></web-r-t-c>
         <add-friend-dialog
           v-bind="{ person, showAddFriendDialog }"
           v-on:addPerson="this.addPerson"
