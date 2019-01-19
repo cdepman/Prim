@@ -8,44 +8,21 @@
         <web-r-t-c></web-r-t-c>
         <add-friend-dialog
           v-bind="{ person, showAddFriendDialog }"
-          v-on:addPerson="this.addPerson"
+          v-on:addPerson="addPerson"
           v-on:hideAddFriendDialog="showAddFriendDialog = false"
         >
         </add-friend-dialog>
-        <v-card dark data-app>
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="Search"
-            hide-details
-            class="search"
-          ></v-text-field>
-          <v-data-table
-            :headers="headers"
-            :items="people"
-            :search="search"
-            sort-icon="mdi-sort-alphabetical"
-            hide-actions
-          >
-            <template slot="headers" slot-scope="props">
-
-            </template>
-            <template slot="items" slot-scope="props">
-              <td>{{ props.item.fullName() }}</td>
-              <td class="text-xs-right">
-                <i class="fas fa-pencil-alt edit-icon"></i>
-              </td>
-            </template>
-            <template slot="no-data">
-              <v-alert :value="true" color="error" icon="warning">
-                Sorry, nothing to display here :(
-              </v-alert>
-            </template>
-            <v-alert slot="no-results" :value="true" color="error" icon="warning">
-              Your search for "{{ search }}" found no results.
-            </v-alert>
-          </v-data-table>
-        </v-card>
+        <friend-detail-dialog
+          v-bind="{ selectedFriend, showFriendDetailDialog }"
+          v-on:updateFriend="updateFriend"
+          v-on:hideAddFriendDialog="showFriendDetailDialog = false"
+        >
+        </friend-detail-dialog>
+        <searchable-list
+          v-bind="{ items }"
+          v-on:selectItem="selectFriend"
+        >
+        </searchable-list>
       </v-container>
     </v-content>
     <navigation
@@ -64,6 +41,8 @@ import QRShow from './QRShow.vue'
 import QRRead from './QRRead.vue'
 import WebRTC from './WebRTC.vue'
 import AddFriendDialog from './AddFriendDialog.vue'
+import FriendDetailDialog from './FriendDetailDialog.vue'
+import SearchableList from './SearchableList.vue'
 import Navigation from './Navigation.vue'
 
 const components = {
@@ -72,7 +51,9 @@ const components = {
   QRRead,
   WebRTC,
   AddFriendDialog,
-  Navigation
+  Navigation,
+  FriendDetailDialog,
+  SearchableList
 }
 
 export default {
@@ -83,11 +64,12 @@ export default {
   data () {
     return {
       showAddFriendDialog: false,
+      showFriendDetailDialog: false,
       editedIndex: -1,
       search: '',
       people: [],
       showQR: false,
-      selectedId: null,
+      selectedFriend: null,
       person: {},
       headers: [
         {
@@ -126,17 +108,22 @@ export default {
     handleCreate () {
       console.log('Child has been created.')
     },
-    handleFriendSelected (selectedFriendId) {
-      this.selectedId = selectedFriendId
+    selectFriend (selectedFriend) {
+      console.log(selectedFriend)
+      this.selectedFriend = selectedFriend
+      this.showFriendDetailDialog = true
     },
     handleFriendDeselected () {
       console.log('Child has been deselected.')
-      this.selectedId = null
+      this.selectedFriend = null
     },
     getPerson () {
       this.person.id = this.getNextPersonId()
-      this.person.dateAdded = new Date()
+      this.person.createdAt = Date.now()
       return Object.assign(new Person(), this.person)
+    },
+    updateFriend (friend) {
+
     },
     openDialog () {
       this.showAddFriendDialog = true
@@ -180,11 +167,6 @@ input::placeholder {
 }
 .input-group {
   width: 100%;
-}
-
-.search {
-  margin: 10px;
-  padding-top: 18px;
 }
 
 label {
