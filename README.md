@@ -21,12 +21,16 @@ npm run build --report
 
 
 **TODO**:
-* Capture QR file and extract JSON data
+* Vuetify Combobox/Chips for adding small data attributes
+* Extract JSON data from QR
   * Create users from Data
-* Add Edit Feature For Members
+* Add Carousel for Notes
+* Add Edit Feature For Friends
 * Find Good Free Font for Title
   * Ask Fahad
 
 **WISHLIST:
 * Choose your own provider for encrypted storage
   * Azure, Aws, Google Cloud, Digital Ocean, etc.
+* Multiplayer
+* WebRTC

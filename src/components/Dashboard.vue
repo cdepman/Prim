@@ -19,7 +19,7 @@
         >
         </friend-detail-dialog>
         <searchable-list
-          v-bind="{ items }"
+          v-bind="{ items: people }"
           v-on:selectItem="selectFriend"
         >
         </searchable-list>
