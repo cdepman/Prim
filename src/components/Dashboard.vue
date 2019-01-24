@@ -1,11 +1,16 @@
 <template>
   <v-app>
     <v-content>
+      <page-header v-bind:user="user"></page-header>
       <v-container fluid>
-        <page-header v-bind:user="user"></page-header>
         <q-r-show v-on:hideQR="showQR = false" v-bind="{ qrContents, showQR }"></q-r-show>
         <q-r-read></q-r-read>
         <web-r-t-c></web-r-t-c>
+        <sign-out-dialog
+          v-bind="{ showSignOutDialog }"
+          v-on:hideSignOutDialog="showSignOutDialog = false"
+        >
+        </sign-out-dialog>
         <add-friend-dialog
           v-bind="{ person, showAddFriendDialog }"
           v-on:addPerson="addPerson"
@@ -13,28 +18,30 @@
         >
         </add-friend-dialog>
         <friend-detail-dialog
+          v-if="selectedFriend"
           v-bind="{ selectedFriend, showFriendDetailDialog }"
           v-on:updateFriend="updateFriend"
           v-on:hideAddFriendDialog="showFriendDetailDialog = false"
         >
         </friend-detail-dialog>
         <searchable-list
-          v-bind="{ items: people }"
+          v-bind="{ items: friends }"
           v-on:selectItem="selectFriend"
         >
         </searchable-list>
       </v-container>
     </v-content>
-    <navigation
+    <navigation-float
       v-on:showAddFriendDialog="showAddFriendDialog = true"
       v-on:showQR="showQR = true"
       v-on:scanQR="this.scanQR"
-    ></navigation>
+      v-on:showSignOutDialog="showSignOutDialog = true"
+    ></navigation-float>
   </v-app>
 </template>
 
 <script>
-import Person from '../dataModels/Person.js'
+import Friend from '../dataModels/Friend.js'
 import PageHeader from './PageHeader.vue'
 import FriendStorageService from '../services/FriendStorage.js'
 import QRShow from './QRShow.vue'
@@ -44,6 +51,8 @@ import AddFriendDialog from './AddFriendDialog.vue'
 import FriendDetailDialog from './FriendDetailDialog.vue'
 import SearchableList from './SearchableList.vue'
 import Navigation from './Navigation.vue'
+import NavigationFloat from './NavigationFloat.vue'
+import SignOutDialog from './SignOutDialog.vue'
 
 const components = {
   PageHeader,
@@ -53,11 +62,14 @@ const components = {
   AddFriendDialog,
   Navigation,
   FriendDetailDialog,
-  SearchableList
+  SearchableList,
+  NavigationFloat,
+  SignOutDialog
 }
 
 export default {
   name: 'dashboard',
+  components: components,
   props: {
     user: Object
   },
@@ -65,34 +77,22 @@ export default {
     return {
       showAddFriendDialog: false,
       showFriendDetailDialog: false,
-      editedIndex: -1,
-      search: '',
-      people: [],
+      showSignOutDialog: false,
+      friends: [],
       showQR: false,
       selectedFriend: null,
-      person: {},
-      headers: [
-        {
-          sortable: true,
-          value: 'firstName'
-        },
-        { value: 'lastName' }
-      ]
+      person: {}
     }
   },
   computed: {
-    formTitle: function () {
-      return this.editedIndex === -1 ? 'New Entry' : 'Edit Entry'
-    },
     qrContents: function () {
-      return JSON.stringify(this.people)
+      return JSON.stringify(this.friends)
     }
   },
-  components: components,
   watch: {
-    people: {
-      handler: function (people) {
-        FriendStorageService.storeJSON(JSON.stringify(people))
+    friends: {
+      handler: function (friends) {
+        FriendStorageService.storeJSON(JSON.stringify(friends))
       },
       deep: true
     }
@@ -101,57 +101,47 @@ export default {
     this.fetchData()
   },
   methods: {
-    scanQR: function () {
-      console.log('scanQr')
+    scanQR () {
       document.getElementById('qr_upload').click()
     },
-    handleCreate () {
-      console.log('Child has been created.')
-    },
     selectFriend (selectedFriend) {
-      console.log(selectedFriend)
       this.selectedFriend = selectedFriend
       this.showFriendDetailDialog = true
     },
-    handleFriendDeselected () {
-      console.log('Child has been deselected.')
-      this.selectedFriend = null
-    },
-    getPerson () {
+    createPerson () {
       this.person.id = this.getNextPersonId()
-      this.person.createdAt = Date.now()
-      return Object.assign(new Person(), this.person)
+      this.person.createdAt = this.person.updatedAt = Date.now()
+      return Object.assign(new Friend(), this.person)
     },
-    updateFriend (friend) {
-
-    },
-    openDialog () {
-      this.showAddFriendDialog = true
-    },
-    closeDialog () {
-      this.showAddFriendDialog = false
+    updateFriend (updatedFriend) {
+      const numItemsToReplace = 1
+      this.friends.forEach((storedFriend, index) => {
+        if (updatedFriend.id === storedFriend.id) {
+          this.friends.splice(index, numItemsToReplace, updatedFriend)
+        }
+      }, this)
     },
     addPerson (person) {
       console.log('ADD PERSON: ', person)
       return
-      // let personToAdd = this.getPerson()
-      // if (!personToAdd.isComplete()) return
-      // this.people.unshift(personToAdd)
+      // let friendToAdd = this.createPerson()
+      // if (!friendToAdd.isComplete()) return
+      // this.friends.unshift(friendToAdd)
       // this.person = {}
       // this.closeDialog()
     },
     getNextPersonId () {
-      if (this.people.length === 0) return 0
-      let max = Math.max(...this.people.map((person) => person.id)) || 0
+      if (this.friends.length === 0) return 0
+      let max = Math.max(...this.friends.map((person) => person.id)) || 0
       return max + 1
     },
     fetchData () {
       FriendStorageService.fetchJSON()
       .then((peopleJSONBlob) => {
-        let people = JSON.parse(peopleJSONBlob || '[]')
-        if (people.length) {
-          let inflatedPeople = people.map((p) => Person.fromJson(p))
-          this.people = inflatedPeople
+        let friends = JSON.parse(peopleJSONBlob || '[]')
+        if (friends.length) {
+          let inflatedPeople = friends.map((p) => Friend.fromJson(p))
+          this.friends = inflatedPeople
         }
       })
     }

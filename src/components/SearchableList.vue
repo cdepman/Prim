@@ -14,15 +14,13 @@
       sort-icon="mdi-sort-alphabetical"
       hide-actions
     >
-      <template slot="headers" slot-scope="props">
-
-      </template>
+      <template slot="headers" slot-scope="props"></template>
       <template slot="items" slot-scope="props">
-        <td v-on:click="$emit('selectItem', props.item)">{{ props.item.fullName() }}</td>
+        <td v-on:click="$emit('selectItem', props.item)">{{ props.item.name }}</td>
       </template>
       <template slot="no-data">
         <v-alert :value="true" color="error" icon="warning">
-          Sorry, nothing to display here
+          Nothing to display here yet 😑
         </v-alert>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -38,7 +36,13 @@ export default {
   },
   data () {
     return {
-      search: ''
+      search: '',
+      headers: [
+        {
+          sortable: true,
+          value: 'name'
+        }
+      ]
     }
   }
 }

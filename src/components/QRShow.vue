@@ -10,6 +10,14 @@
       transition="dialog-bottom-transition"
     >
       <v-card color="#003366" class="qr-container" v-on:click="$emit('hideQR')">
+        <v-toolbar
+        fixed
+        dark
+        >
+        <div>
+          Share your personal info with someone you trust
+        </div>
+        </v-toolbar>
         <canvas id="qr_canvas"></canvas>
       </v-card>
     </v-dialog>
@@ -66,6 +74,7 @@ export default {
 }
 .qr-container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 </style>

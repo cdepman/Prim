@@ -21,6 +21,7 @@ npm run build --report
 
 
 **TODO**:
+*
 * Vuetify Combobox/Chips for adding small data attributes
 * Extract JSON data from QR
   * Create users from Data
@@ -30,6 +31,7 @@ npm run build --report
   * Ask Fahad
 
 **WISHLIST:
+* Offline mode
 * Choose your own provider for encrypted storage
   * Azure, Aws, Google Cloud, Digital Ocean, etc.
 * Multiplayer

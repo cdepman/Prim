@@ -1,37 +1,43 @@
 <template>
-  <v-content row>
-    <v-card>
-      <v-img
-        src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-        height="200px"
-      >
-      </v-img>
+  <v-flex>
+    <v-content>
+      <v-card>
+        <v-img
+          src="https://i.pinimg.com/originals/2e/c5/a7/2ec5a7c9f7d16d1861a6cf0f87ba8594.jpg"
+          height="200px"
+        >
+        </v-img>
 
-      <v-card-title primary-title>
-        <div>
-          <div class="headline">Prim</div>
-          <span class="grey--text">
-            A decentralized personal relationship manager built on <a href="https://blockstack.org" target="_blank">Blockstack</a>
-          </span>
-        </div>
-      </v-card-title>
+        <v-card-title primary-title>
+          <div>
+            <div class="headline">Prim</div>
+            <span class="grey--text">
+              A secure, decentralized personal relationship manager built on <a href="https://blockstack.org" target="_blank">Blockstack</a>.
+            </span>
+          </div>
+        </v-card-title>
 
-      <v-card-actions>
-        <v-btn flat @click.prevent="signIn">Sign In With Blockstack</v-btn>
-        <v-btn flat color="pink">Learn More</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn icon @click="show = !show">
-          <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-        </v-btn>
-      </v-card-actions>
+        <v-card-actions>
+          <v-btn small @click.prevent="signIn">Log In With Blockstack</v-btn>
+          <v-btn small @click="show = !show" color="grey">Learn More</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="show = !show">
+            <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+          </v-btn>
+        </v-card-actions>
 
-      <v-slide-y-transition>
-        <v-card-text v-show="show">
-
-        </v-card-text>
-      </v-slide-y-transition>
-    </v-card>
-  </v-content>
+        <v-slide-y-transition>
+          <v-card-text v-show="show">
+            Own your data. Prim provides an encrypted space to collect,
+            synthesize, and utilize information about the poeple who
+            matter in your life. All computations relating to your data happen
+            on your device, never through a centralized server. Choose who you share your
+            personal information with using single-time-use QR codes.
+          </v-card-text>
+        </v-slide-y-transition>
+      </v-card>
+    </v-content>
+  </v-flex>
 </template>
 
 <script>

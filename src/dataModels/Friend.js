@@ -1,28 +1,11 @@
-export default class Person {
+export default class Friend {
   constructor () {
     this.id = null
-    this.firstName = ''
-    this.lastName = ''
-    this.middleName = ''
+    this.name = ''
     this.createdAt = ''
     this.updatedAt = ''
-    this.age = null
-    this.places = {}
-    this.dates = {}
-    this.interests = {}
-    this.foods = {}
-    this.media = {}
-    this.activities = {}
-    this.people = {}
-    this.requiredFields = ['id', 'firstName', 'lastName']
-  }
-
-  fullName () {
-    return [
-      this.firstName,
-      this.middleName,
-      this.lastName
-    ].filter(Boolean).join(' ')
+    this.metadata = {}
+    this.requiredFields = ['id', 'name', 'metadata']
   }
 
   isComplete () {
@@ -41,8 +24,12 @@ export default class Person {
     }, this)
   }
 
+  uuid () {
+    return `prim:${this.name}:${this.createdAt}`
+  }
+
   static fromJson (json) {
-    return Object.assign(new Person(), json)
+    return Object.assign(new Friend(), json)
   }
 
   asJson () {

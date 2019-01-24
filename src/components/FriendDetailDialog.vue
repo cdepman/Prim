@@ -7,7 +7,7 @@
     <v-card>
       <v-card-title>
         <span class="headline">
-          {{ selectedFriend.fullName() }}
+          {{ selectedFriend.name }}
         </span>
       </v-card-title>
 

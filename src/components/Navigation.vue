@@ -24,7 +24,7 @@
     <v-btn
       flat
       value="scan"
-      v-on:click="$emit('scanQR')"
+      v-on:click="$emit('logOut')"
     >
       <i class="fas fa-camera fa-2x"></i>
     </v-btn>

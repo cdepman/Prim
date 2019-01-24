@@ -14,8 +14,8 @@
       <v-card-text>
         <v-layout justify-center column fill-height>
             <v-text-field
-              v-model="person.firstName"
-              label="First Name"
+              v-model="person.name"
+              label="Name"
             ></v-text-field>
             <v-text-field
               v-model="person.lastName"
@@ -24,10 +24,6 @@
             <v-text-field
               v-model="person.birthdate"
               label="Birthdate"
-            ></v-text-field>
-            <v-text-field
-              v-model="person.middleName"
-              label="Middle Name"
             ></v-text-field>
         </v-layout>
       </v-card-text>
