@@ -26,7 +26,7 @@
         fab
         dark
         medium
-        color="green"
+        color="#A0398C"
         v-on:click="$emit('showAddFriendDialog')"
       >
         <i class="action-icon material-icons md-36">person_add</i>
@@ -35,7 +35,7 @@
         fab
         dark
         medium
-        color="indigo"
+        color="#5B725F"
         v-on:click="$emit('showQR')"
       >
         <i class="action-icon fas fa-qrcode fa-2x"></i>
@@ -44,7 +44,7 @@
         fab
         dark
         medium
-        color="yellow"
+        color="#2D9841"
         v-on:click="$emit('scanQR')"
       >
         <i class="action-icon fas fa-camera fa-2x"></i>
