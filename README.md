@@ -34,5 +34,6 @@ npm run build --report
 * Offline mode
 * Choose your own provider for encrypted storage
   * Azure, Aws, Google Cloud, Digital Ocean, etc.
+  https://github.com/blockstack/gaia/tree/master/hub
 * Multiplayer
 * WebRTC

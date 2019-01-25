@@ -9,15 +9,22 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card color="#003366" class="qr-container" v-on:click="$emit('hideQR')">
         <v-toolbar
         fixed
         dark
         >
         <div>
-          Share your personal info with someone you trust
+          Share your info with someone you trust
         </div>
+        <v-spacer/>
+        <v-btn
+          color="primary"
+          v-on:click="$emit('hideQR'); $emit('editProfile')"
+        >
+          Edit
+        </v-btn>
         </v-toolbar>
+      <v-card color="#003366" class="qr-container" v-on:click="$emit('hideQR')">
         <canvas id="qr_canvas"></canvas>
       </v-card>
     </v-dialog>

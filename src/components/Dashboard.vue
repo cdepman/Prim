@@ -1,9 +1,17 @@
 <template>
   <v-app>
     <v-content>
-      <page-header v-bind:user="user"></page-header>
+      <page-header
+        v-bind:user="user"
+        v-on:editProfile="editProfile"
+      >
+      </page-header>
       <v-container fluid>
-        <q-r-show v-on:hideQR="showQR = false" v-bind="{ qrContents, showQR }"></q-r-show>
+        <q-r-show
+          v-on:hideQR="showQR = false"
+          v-on:editProfile="editProfile"
+          v-bind="{ qrContents, showQR }">
+        </q-r-show>
         <q-r-read></q-r-read>
         <web-r-t-c></web-r-t-c>
         <sign-out-dialog
@@ -25,8 +33,9 @@
         >
         </friend-detail-dialog>
         <searchable-list
-          v-bind="{ items: friends }"
+          v-bind="{ items: filteredFriends }"
           v-on:selectItem="selectFriend"
+          v-on:search="search"
         >
         </searchable-list>
       </v-container>
@@ -42,6 +51,7 @@
 
 <script>
 import Friend from '../dataModels/Friend.js'
+import CreateFriend from '../interactors/CreateFriend.js'
 import PageHeader from './PageHeader.vue'
 import FriendStorageService from '../services/FriendStorage.js'
 import QRShow from './QRShow.vue'
@@ -53,6 +63,8 @@ import SearchableList from './SearchableList.vue'
 import Navigation from './Navigation.vue'
 import NavigationFloat from './NavigationFloat.vue'
 import SignOutDialog from './SignOutDialog.vue'
+
+import Fuse from 'fuse.js'
 
 const components = {
   PageHeader,
@@ -81,12 +93,28 @@ export default {
       friends: [],
       showQR: false,
       selectedFriend: null,
-      person: {}
+      person: {},
+      searchTerm: ''
     }
   },
   computed: {
-    qrContents: function () {
+    qrContents () {
       return JSON.stringify(this.friends)
+    },
+    filteredFriends () {
+      if (!this.searchTerm) return this.friends
+
+      const options = {
+        shouldSort: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 0,
+        keys: [ 'name' ]
+      }
+      const fuse = new Fuse(this.friends, options)
+      return fuse.search(this.searchTerm)
     }
   },
   watch: {
@@ -98,20 +126,19 @@ export default {
     }
   },
   mounted () {
+    console.log('fetchData')
     this.fetchData()
   },
   methods: {
+    search (term) {
+      this.searchTerm = term
+    },
     scanQR () {
       document.getElementById('qr_upload').click()
     },
     selectFriend (selectedFriend) {
       this.selectedFriend = selectedFriend
       this.showFriendDetailDialog = true
-    },
-    createPerson () {
-      this.person.id = this.getNextPersonId()
-      this.person.createdAt = this.person.updatedAt = Date.now()
-      return Object.assign(new Friend(), this.person)
     },
     updateFriend (updatedFriend) {
       const numItemsToReplace = 1
@@ -122,18 +149,21 @@ export default {
       }, this)
     },
     addPerson (person) {
-      console.log('ADD PERSON: ', person)
-      return
-      // let friendToAdd = this.createPerson()
-      // if (!friendToAdd.isComplete()) return
-      // this.friends.unshift(friendToAdd)
-      // this.person = {}
-      // this.closeDialog()
+      console.log('ADD PERSON')
+      const friendToAdd = CreateFriend.run({
+        id: this.getNextPersonId(),
+        attributes: this.person
+      })
+      this.friends.unshift(friendToAdd)
+      this.person = {}
     },
     getNextPersonId () {
       if (this.friends.length === 0) return 0
       let max = Math.max(...this.friends.map((person) => person.id)) || 0
       return max + 1
+    },
+    editProfile () {
+      console.log('edit profile!')
     },
     fetchData () {
       FriendStorageService.fetchJSON()

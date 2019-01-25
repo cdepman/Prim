@@ -1,9 +1,9 @@
 <template>
-  <v-toolbar>
+  <v-toolbar dense fixed>
     <v-toolbar-title>Prim</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn @click="$emit('showUserDetail')">
+      <v-btn @click="$emit('editProfile')">
         {{ user.username }}
       </v-btn>
     </v-toolbar-items>

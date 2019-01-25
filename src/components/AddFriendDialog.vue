@@ -3,6 +3,7 @@
     v-model="showAddFriendDialog"
     max-width="500px"
     dark
+    persistent
   >
     <v-card>
       <v-card-title>
@@ -16,14 +17,6 @@
             <v-text-field
               v-model="person.name"
               label="Name"
-            ></v-text-field>
-            <v-text-field
-              v-model="person.lastName"
-              label="Last Name"
-            ></v-text-field>
-            <v-text-field
-              v-model="person.birthdate"
-              label="Birthdate"
             ></v-text-field>
         </v-layout>
       </v-card-text>
@@ -40,7 +33,7 @@
         <v-btn
           color="blue darken-1"
           flat
-          @click="$emit('addPerson', person)"
+          @click="$emit('hideAddFriendDialog'); $emit('addPerson', person)"
         >
           Save
         </v-btn>

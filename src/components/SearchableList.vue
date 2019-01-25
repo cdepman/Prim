@@ -1,31 +1,26 @@
 <template>
-  <v-card dark data-app>
+  <v-card dark data-app class="friend-search">
     <v-text-field
       v-model="search"
       append-icon="search"
       label="Search"
       hide-details
-      class="search"
+      class="search-bar"
     ></v-text-field>
     <v-data-table
-      :headers="headers"
+      hide-headers
       :items="items"
-      :search="search"
       sort-icon="mdi-sort-alphabetical"
       hide-actions
     >
-      <template slot="headers" slot-scope="props"></template>
       <template slot="items" slot-scope="props">
         <td v-on:click="$emit('selectItem', props.item)">{{ props.item.name }}</td>
       </template>
       <template slot="no-data">
-        <v-alert :value="true" color="error" icon="warning">
-          Nothing to display here yet 😑
+        <v-alert :value="true" color="purple darken-3" icon="warning">
+          Nothing here 😭
         </v-alert>
       </template>
-      <v-alert slot="no-results" :value="true" color="error" icon="warning">
-        Couldn't find "{{ search }}" 😫 Try another spelling?
-      </v-alert>
     </v-data-table>
   </v-card>
 </template>
@@ -44,12 +39,24 @@ export default {
         }
       ]
     }
+  },
+  watch: {
+    search: {
+      handler: function (newSearch) {
+        this.$emit('search', newSearch)
+      }
+    }
   }
 }
+
 </script>
 <style scoped>
-.search {
+.search-bar {
   margin: 10px;
   padding-top: 18px;
+}
+
+.friend-search {
+  top: 40px;
 }
 </style>

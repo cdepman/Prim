@@ -7,7 +7,7 @@
       :right="right"
       :left="left"
       :direction="direction"
-      :open-on-hover="hover"
+      open-on-hover
       :transition="transition"
       fixed
     >
@@ -67,7 +67,7 @@
       direction: 'left',
       fab: false,
       fling: false,
-      hover: false,
+      hover: true,
       tabs: null,
       top: false,
       right: true,

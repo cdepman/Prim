@@ -3,6 +3,7 @@
     v-model="showFriendDetailDialog"
     max-width="500px"
     dark
+    persistent
   >
     <v-card>
       <v-card-title>
