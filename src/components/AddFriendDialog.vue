@@ -18,6 +18,16 @@
               v-model="person.name"
               label="Name"
             ></v-text-field>
+            <div v-for="note in person.notes" v-bind:key="note.id">
+              <v-text-field
+                v-model="note.title"
+                label="Note Title"
+              ></v-text-field>
+              <v-text-field
+                v-model="note.content"
+                label="Note Content"
+              ></v-text-field>
+            </div>
         </v-layout>
       </v-card-text>
 
@@ -45,7 +55,7 @@
 export default {
   data () {
     return {
-      formTitle: 'Add Friend'
+      formTitle: 'Add Entry'
     }
   },
   props: {

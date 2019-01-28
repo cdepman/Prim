@@ -30,6 +30,7 @@
           v-bind="{ selectedFriend, showFriendDetailDialog }"
           v-on:updateFriend="updateFriend"
           v-on:hideAddFriendDialog="showFriendDetailDialog = false"
+          v-on:showNoteDetail="noteDetail"
         >
         </friend-detail-dialog>
         <searchable-list
@@ -63,7 +64,6 @@ import SearchableList from './SearchableList.vue'
 import Navigation from './Navigation.vue'
 import NavigationFloat from './NavigationFloat.vue'
 import SignOutDialog from './SignOutDialog.vue'
-
 import Fuse from 'fuse.js'
 
 const components = {
@@ -90,10 +90,19 @@ export default {
       showAddFriendDialog: false,
       showFriendDetailDialog: false,
       showSignOutDialog: false,
+      showNoteDetail: false,
       friends: [],
       showQR: false,
       selectedFriend: null,
-      person: {},
+      selectedNote: null,
+      person: {
+        notes: [
+          {
+            title: '',
+            content: ''
+          }
+        ]
+      },
       searchTerm: ''
     }
   },
@@ -133,6 +142,11 @@ export default {
     search (term) {
       this.searchTerm = term
     },
+    noteDetail (note) {
+      console.log(note)
+      this.selectedNote = note
+      this.showNoteDetail = true
+    },
     scanQR () {
       document.getElementById('qr_upload').click()
     },
@@ -154,6 +168,7 @@ export default {
         id: this.getNextPersonId(),
         attributes: this.person
       })
+      debugger
       this.friends.unshift(friendToAdd)
       this.person = {}
     },

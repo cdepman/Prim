@@ -1,34 +1,56 @@
 <template>
+<div>
+  <note-detail-dialog
+    v-if="selectedNote"
+    v-bind="{ selectedNote, showNoteDetail }"
+    v-on:closeNoteDetail="selectedNote = null; showNoteDetail = false">
+  </note-detail-dialog>
   <v-dialog
     v-model="showFriendDetailDialog"
-    max-width="500px"
+    fullscreen
+    hide-overlay
     dark
-    persistent
+    transition="dialog-bottom-transition"
   >
-    <v-card>
+    <v-card raised>
       <v-card-title>
         <span class="headline">
           {{ selectedFriend.name }}
         </span>
-        <v-spacer/>
-        <i :class="editIconClass" class="edit-friend fas fa-edit fa-2x" v-on:click="edit"> </i>
       </v-card-title>
 
       <v-card-text>
-        <v-layout justify-center column fill-height>
-            <v-text-field
-              :disabled="disabled"
-              v-model="selectedFriend.name"
-              label="Name"
-            ></v-text-field>
+        <v-text-field
+          :disabled="disabled"
+          v-model="selectedFriend.name"
+          label="Name"
+        >
+          <i
+            :class="editIconClass"
+            slot="append"
+            class="edit-friend fas fa-edit fa-1x"
+            v-on:click="edit">
+          </i>
+        </v-text-field>
+        <v-layout row-wrap fill-height>
+          <div v-if="selectedFriend.notes.length">
+            <div v-for="note in selectedFriend.notes" v-bind:key="note.id">
+              <v-chip v-on:click="selectedNote = note; showNoteDetail = true">
+                {{ note.title }}
+              </v-chip>
+            </div>
+          </div>
+          <v-chip>
+            Add a note
+            <v-icon right>add</v-icon>
+          </v-chip>
         </v-layout>
       </v-card-text>
-
+      <v-spacer></v-spacer>
       <v-card-actions>
-        <v-spacer></v-spacer>
         <v-btn
+          block
           color="blue darken-1"
-          flat
           @click="hideFriendDialog"
         >
           Ok
@@ -36,13 +58,20 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+</div>
 </template>
 <script>
+import NoteDetailDialog from './NoteDetailDialog.vue'
+
 export default {
+  components: {
+    NoteDetailDialog
+  },
   data () {
     return {
-      formTitle: 'Add Friend',
-      disabled: true
+      disabled: true,
+      selectedNote: null,
+      showNoteDetail: false
     }
   },
   props: {
@@ -51,6 +80,7 @@ export default {
   },
   methods: {
     edit () {
+      console.log('edit')
       this.disabled = !this.disabled
     },
     hideFriendDialog () {

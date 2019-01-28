@@ -4,28 +4,7 @@ export default class Friend {
     this.name = ''
     this.createdAt = ''
     this.updatedAt = ''
-    this.metadata = {}
-    this.requiredFields = ['id', 'name', 'metadata']
-  }
-
-  isComplete () {
-    return this.requiredFields.every((field) => {
-      const value = this[field]
-      if (typeof value === 'string' && value.length === 0) {
-        return false
-      }
-      if (typeof value === 'object' && Object.keys(value).length === 0) {
-        return false
-      }
-      if (Array.isArray(value) && value.length === 0) {
-        return false
-      }
-      return true
-    }, this)
-  }
-
-  uuid () {
-    return `prim:${this.name}:${this.createdAt}`
+    this.notes = []
   }
 
   static fromJson (json) {

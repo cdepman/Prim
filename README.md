@@ -21,14 +21,10 @@ npm run build --report
 
 
 **TODO**:
-*
 * Vuetify Combobox/Chips for adding small data attributes
 * Extract JSON data from QR
   * Create users from Data
 * Add Carousel for Notes
-* Add Edit Feature For Friends
-* Find Good Free Font for Title
-  * Ask Fahad
 
 **WISHLIST:
 * Offline mode
