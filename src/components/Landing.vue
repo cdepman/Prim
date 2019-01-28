@@ -19,7 +19,11 @@
 
         <v-card-actions>
           <v-btn small @click.prevent="signIn">Log In With Blockstack</v-btn>
-          <v-btn small @click="show = !show" color="grey">Learn More</v-btn>
+          <v-btn small color="grey">
+            <a href="https://blockstack.org/faq/">
+              Learn More
+            </a>
+          </v-btn>
           <v-spacer></v-spacer>
           <v-btn icon @click="show = !show">
             <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
@@ -43,7 +47,7 @@
 export default {
   name: 'landing',
   data: () => ({
-    show: false,
+    show: true,
     blockstack: window.blockstack
   }),
   methods: {
