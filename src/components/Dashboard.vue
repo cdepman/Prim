@@ -163,12 +163,10 @@ export default {
       }, this)
     },
     addPerson (person) {
-      console.log('ADD PERSON')
       const friendToAdd = CreateFriend.run({
         id: this.getNextPersonId(),
         attributes: this.person
       })
-      debugger
       this.friends.unshift(friendToAdd)
       this.person = {}
     },
