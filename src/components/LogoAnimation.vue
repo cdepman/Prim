@@ -44,6 +44,7 @@ export default {
 .logo .square {
   height: 5px;
   width: 5px;
+  border-radius: 10px;
   top: calc(-5px * 2 / 3);
   margin-right: calc(5px / 3);
   margin-top: calc(5px / 3);
