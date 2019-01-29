@@ -1,19 +1,33 @@
 <template>
   <v-toolbar dense fixed>
-    <v-toolbar-title>Prim</v-toolbar-title>
+  <logo-animation/>
+    <v-toolbar-title id="app_title">Prim</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn @click="$emit('editProfile')">
+      <v-chip color="purple dark-3" id="user_chip" @click="$emit('editProfile')">
         {{ user.username }}
-      </v-btn>
+      </v-chip>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
+import LogoAnimation from './LogoAnimation'
+
 export default {
   props: {
     user: Object
-  }
+  },
+  components: { LogoAnimation }
 }
 </script>
+<style scoped>
+#user_chip {
+  top: 8px;
+  height: 26px;
+}
+
+#app_title {
+  margin-left: 5px;
+}
+</style>

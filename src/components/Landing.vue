@@ -19,7 +19,7 @@
 
         <v-card-actions>
           <v-btn small @click.prevent="signIn">Log In With Blockstack</v-btn>
-          <v-btn small color="grey">
+          <v-btn small>
             <a href="https://blockstack.org/faq/">
               Learn More
             </a>
@@ -34,7 +34,7 @@
           <v-card-text v-show="show">
             Own your data - Prim provides a secure space to collect, synthesize, and utilize
             information about the people who matter in your life. All computations relating to your data
-            happen on your device, never through a centralized server.
+            happen on your device, <bold>never</bold> through a centralized server.
             Share locally - Choose who you share your personal information with using single-time-use QR codes.
           </v-card-text>
         </v-slide-y-transition>

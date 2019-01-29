@@ -1,6 +1,8 @@
 <template>
   <v-app>
     <v-content>
+      <loading-animation v-bind="{ showLoading }">
+      </loading-animation>
       <page-header
         v-bind:user="user"
         v-on:editProfile="editProfile"
@@ -31,6 +33,7 @@
           v-on:updateFriend="updateFriend"
           v-on:hideAddFriendDialog="showFriendDetailDialog = false"
           v-on:showNoteDetail="noteDetail"
+          v-on:addNote="addNote"
         >
         </friend-detail-dialog>
         <searchable-list
@@ -64,6 +67,8 @@ import SearchableList from './SearchableList.vue'
 import Navigation from './Navigation.vue'
 import NavigationFloat from './NavigationFloat.vue'
 import SignOutDialog from './SignOutDialog.vue'
+import LoadingAnimation from './LoadingAnimation.vue'
+
 import Fuse from 'fuse.js'
 
 const components = {
@@ -76,7 +81,8 @@ const components = {
   FriendDetailDialog,
   SearchableList,
   NavigationFloat,
-  SignOutDialog
+  SignOutDialog,
+  LoadingAnimation
 }
 
 export default {
@@ -87,6 +93,7 @@ export default {
   },
   data () {
     return {
+      showLoading: true,
       showAddFriendDialog: false,
       showFriendDetailDialog: false,
       showSignOutDialog: false,
@@ -162,6 +169,17 @@ export default {
         }
       }, this)
     },
+    startLoading () {
+      this.showLoading = true
+    },
+    endLoading () {
+      this.showLoading = false
+    },
+    addNote ({ selectedFriend, note }) {
+      console.log(selectedFriend, note)
+      const friend = this.friends.find((friend) => friend === selectedFriend)
+      friend.notes.push(note)
+    },
     addPerson (person) {
       const friendToAdd = CreateFriend.run({
         id: this.getNextPersonId(),
@@ -179,12 +197,14 @@ export default {
       console.log('edit profile!')
     },
     fetchData () {
+      this.startLoading()
       FriendStorageService.fetchJSON()
       .then((peopleJSONBlob) => {
         let friends = JSON.parse(peopleJSONBlob || '[]')
         if (friends.length) {
           let inflatedPeople = friends.map((p) => Friend.fromJson(p))
           this.friends = inflatedPeople
+          this.endLoading()
         }
       })
     }
