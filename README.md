@@ -19,12 +19,11 @@ npm run build --report
 
 ```
 
-
 **TODO**:
-* Vuetify Combobox/Chips for adding small data attributes
+* Scrolling list on dashboard
+* List Ordered by latest note
 * Extract JSON data from QR
   * Create users from Data
-* Add Carousel for Notes
 
 **WISHLIST:
 * Offline mode
