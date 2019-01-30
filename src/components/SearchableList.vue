@@ -7,7 +7,7 @@
       hide-details
       class="search-bar"
     ></v-text-field>
-    <v-flex md6 style="overflow: auto">
+    <v-flex style="overflow: auto">
       <v-data-table
         hide-headers
         :items="items"
