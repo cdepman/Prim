@@ -40,16 +40,19 @@
         <searchable-list
           v-bind="{ items: filteredFriends }"
           v-on:selectItem="selectFriend"
-          v-on:search="search"
         >
         </searchable-list>
       </v-container>
     </v-content>
-    <navigation-float
-      v-on:showAddFriendDialog="showAddFriendDialog = true"
-      v-on:showQR="showQR = true"
-      v-on:showSignOutDialog="showSignOutDialog = true"
-    ></navigation-float>
+    <div id="footer">
+      <search-bar v-on:search="search">
+      </search-bar>
+      <navigation-float
+        v-on:showAddFriendDialog="showAddFriendDialog = true"
+        v-on:showQR="showQR = true"
+        v-on:showSignOutDialog="showSignOutDialog = true"
+      ></navigation-float>
+    </div>
   </v-app>
 </template>
 
@@ -68,6 +71,7 @@ import Navigation from './Navigation.vue'
 import NavigationFloat from './NavigationFloat.vue'
 import SignOutDialog from './SignOutDialog.vue'
 import LoadingAnimation from './LoadingAnimation.vue'
+import SearchBar from './SearchBar.vue'
 
 import Fuse from 'fuse.js'
 
@@ -82,7 +86,8 @@ const components = {
   SearchableList,
   NavigationFloat,
   SignOutDialog,
-  LoadingAnimation
+  LoadingAnimation,
+  SearchBar
 }
 
 export default {
@@ -258,6 +263,12 @@ label {
 
 .edit-icon:hover {
   color: black;
+}
+
+#footer {
+  padding-right: 105px;
+  padding-bottom: 30px;
+  padding-left: 25px;
 }
 
 .upload-btn-wrapper input[type=file] {

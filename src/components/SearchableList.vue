@@ -1,12 +1,5 @@
 <template>
   <v-card dark data-app class="friend-search">
-    <v-text-field
-      v-model="search"
-      append-icon="search"
-      label="Search"
-      hide-details
-      class="search-bar"
-    ></v-text-field>
     <v-flex style="overflow: auto">
       <v-data-table
         hide-headers
