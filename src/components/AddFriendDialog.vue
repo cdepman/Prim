@@ -6,10 +6,19 @@
     persistent
   >
     <v-card>
-      <v-card-title>
+      <v-card-title style="justify-content: space-between;">
         <span class="headline">
           {{ formTitle }}
         </span>
+        <v-btn
+          dark
+          medium
+          color="purple darken-3"
+          v-on:click="$emit('scanQR')"
+        >
+        <i class="action-icon fas fa-camera fa-2x" id="camera_icon"></i>
+        Scan QR
+      </v-btn>
       </v-card-title>
 
       <v-card-text>
@@ -64,3 +73,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+#camera_icon {
+  padding-right: 10px;
+}
+</style>

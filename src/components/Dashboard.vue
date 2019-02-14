@@ -24,6 +24,7 @@
         <add-friend-dialog
           v-bind="{ person, showAddFriendDialog }"
           v-on:addPerson="addPerson"
+          v-on:scanQR="scanQR"
           v-on:hideAddFriendDialog="showAddFriendDialog = false"
         >
         </add-friend-dialog>
@@ -47,7 +48,6 @@
     <navigation-float
       v-on:showAddFriendDialog="showAddFriendDialog = true"
       v-on:showQR="showQR = true"
-      v-on:scanQR="this.scanQR"
       v-on:showSignOutDialog="showSignOutDialog = true"
     ></navigation-float>
   </v-app>

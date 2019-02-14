@@ -19,7 +19,7 @@
           <td class="note-count" v-on:click="$emit('selectItem', props.item)" right>
             <circles-to-rhombuses-spinner
               :animation-duration="1200"
-              :circles-num="2"
+              :circles-num="props.item.notes.length"
               :circle-size="6"
               color="#ff1d5e"
             />

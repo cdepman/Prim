@@ -43,15 +43,6 @@
       <v-btn
         fab
         dark
-        medium
-        color="#2D9841"
-        v-on:click="$emit('scanQR')"
-      >
-        <i class="action-icon fas fa-camera fa-2x"></i>
-      </v-btn>
-      <v-btn
-        fab
-        dark
         small
         color="red"
         v-on:click="$emit('showSignOutDialog')"
@@ -64,7 +55,7 @@
 <script>
   export default {
     data: () => ({
-      direction: 'left',
+      direction: 'top',
       fab: false,
       fling: false,
       hover: true,
