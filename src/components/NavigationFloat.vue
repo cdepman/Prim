@@ -55,7 +55,7 @@
 <script>
   export default {
     data: () => ({
-      direction: 'top',
+      direction: 'left',
       fab: false,
       fling: false,
       hover: true,

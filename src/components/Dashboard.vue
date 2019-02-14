@@ -37,22 +37,20 @@
           v-on:addNote="addNote"
         >
         </friend-detail-dialog>
+        <search-bar v-on:search="search">
+        </search-bar>
         <searchable-list
           v-bind="{ items: filteredFriends }"
           v-on:selectItem="selectFriend"
         >
         </searchable-list>
+        <navigation-float
+          v-on:showAddFriendDialog="showAddFriendDialog = true"
+          v-on:showQR="showQR = true"
+          v-on:showSignOutDialog="showSignOutDialog = true"
+        ></navigation-float>
       </v-container>
     </v-content>
-    <div id="footer">
-      <search-bar v-on:search="search">
-      </search-bar>
-      <navigation-float
-        v-on:showAddFriendDialog="showAddFriendDialog = true"
-        v-on:showQR="showQR = true"
-        v-on:showSignOutDialog="showSignOutDialog = true"
-      ></navigation-float>
-    </div>
   </v-app>
 </template>
 
@@ -263,12 +261,6 @@ label {
 
 .edit-icon:hover {
   color: black;
-}
-
-#footer {
-  padding-right: 105px;
-  padding-bottom: 30px;
-  padding-left: 25px;
 }
 
 .upload-btn-wrapper input[type=file] {

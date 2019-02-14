@@ -1,12 +1,14 @@
 <template>
-  <v-card>
+  <v-card style="background: none;">
     <v-text-field
+      :style="style"
       v-model="search"
       append-icon="search"
       label="Search"
       hide-details
       outline
       color="purple darken-3"
+      class="search"
     ></v-text-field>
   </v-card>
 </template>
@@ -23,7 +25,8 @@
       bottom: true,
       left: true,
       transition: 'slide-y-reverse-transition',
-      search: ''
+      search: '',
+      style: 'padding-top: 50px'
     }),
     watch: {
       search: {

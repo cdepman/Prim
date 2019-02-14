@@ -1,5 +1,5 @@
 <template>
-  <v-card dark data-app class="friend-search">
+  <v-card dark data-app class="friend-list">
     <v-flex style="overflow: auto">
       <v-data-table
         hide-headers
@@ -59,7 +59,7 @@ export default {
   padding-top: 18px;
 }
 
-.friend-search {
-  top: 40px;
+.friend-list {
+  top: 20px;
 }
 </style>
