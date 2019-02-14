@@ -16,13 +16,15 @@
         <v-layout justify-center column fill-height>
             <v-text-field
               v-model="note.title"
-              label="Title"
+              placeholder="Title"
+              solo
             ></v-text-field>
             <v-textarea
               v-model="note.content"
               placeholder="Note"
               auto-grow
               full-width
+              solo
             ></v-textarea>
         </v-layout>
       </v-card-text>

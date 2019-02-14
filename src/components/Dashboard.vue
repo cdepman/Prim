@@ -36,12 +36,10 @@
           v-on:addNote="addNote"
         >
         </friend-detail-dialog>
-        <searchable-list
-          v-bind="{ items: filteredFriends }"
-          v-on:selectItem="selectFriend"
-          v-on:search="search"
+        <scroll-list
+          v-bind="{ friends }"
         >
-        </searchable-list>
+        </scroll-list>
       </v-container>
     </v-content>
     <navigation-float
@@ -68,6 +66,7 @@ import Navigation from './Navigation.vue'
 import NavigationFloat from './NavigationFloat.vue'
 import SignOutDialog from './SignOutDialog.vue'
 import LoadingAnimation from './LoadingAnimation.vue'
+import ScrollList from './ScrollList.vue'
 
 import Fuse from 'fuse.js'
 
@@ -82,7 +81,8 @@ const components = {
   SearchableList,
   NavigationFloat,
   SignOutDialog,
-  LoadingAnimation
+  LoadingAnimation,
+  ScrollList
 }
 
 export default {
