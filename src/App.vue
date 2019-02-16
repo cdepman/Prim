@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     isSignedOut () {
-      !this.blockstack.isUserSignedIn()
+      return !this.blockstack.isUserSignedIn()
     }
   }
 }
