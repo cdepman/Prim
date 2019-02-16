@@ -8,7 +8,7 @@
           {{ selectedNote.content }}
         </v-card-text>
         <v-divider></v-divider>
-        <v-btn color="blue darken-1" flat @click="$emit('closeNoteDetail')">Close</v-btn>
+        <v-btn color="gray darken-1" @click="$emit('closeNoteDetail')">Close</v-btn>
       </v-card>
     </v-dialog>
   </v-layout>

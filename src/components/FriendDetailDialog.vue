@@ -44,7 +44,7 @@
           </v-btn>
           <v-btn
             block
-            color="blue darken-1"
+            color="gray darken-1"
             @click="hideFriendDialog"
           >
             Close
