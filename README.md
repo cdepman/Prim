@@ -27,6 +27,7 @@ npm run build --report
 
 **WISHLIST:
 * Offline mode
+* D3 cluster/weighted notes by most recent edit / edit count
 * Choose your own provider for encrypted storage
   * Azure, Aws, Google Cloud, Digital Ocean, etc.
   https://github.com/blockstack/gaia/tree/master/hub

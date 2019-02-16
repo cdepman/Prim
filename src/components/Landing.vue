@@ -19,7 +19,7 @@
 
         <v-card-actions>
           <v-btn small @click.prevent="signIn">Log In (Blockstack)</v-btn>
-          <v-btn color="purple darken-3" small @click.prevent="$emit('demoMode')">Demo the App</v-btn>
+          <v-btn color="purple darken-3" small @click.prevent="$emit('demoMode')">Try the App</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
         <v-slide-y-transition>

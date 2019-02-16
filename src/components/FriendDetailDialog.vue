@@ -31,10 +31,6 @@
                 {{ note.title }}
               </v-chip>
             </div>
-            <v-chip  v-on:click="showAddNote = true">
-              Add a note
-              <v-icon right>add</v-icon>
-            </v-chip>
           </v-layout>
         </v-card-text>
         <v-spacer></v-spacer>
@@ -42,9 +38,16 @@
           <v-btn
             block
             color="blue darken-1"
+            @click="showAddNote = true"
+          >
+            Add a note
+          </v-btn>
+          <v-btn
+            block
+            color="blue darken-1"
             @click="hideFriendDialog"
           >
-            Ok
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -104,5 +107,8 @@ export default {
 }
 .edit-friend-active {
   text-shadow: -1px -1px 2px white;
+}
+v-card-actions {
+  flex-direction: column;
 }
 </style>
