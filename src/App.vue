@@ -1,8 +1,13 @@
 <template>
   <v-app dark style="overflow: hidden">
     <loading-animation v-bind="{ showLoading }"></loading-animation>
-    <landing v-if="! blockstack.isUserSignedIn()"></landing>
-    <dashboard v-if="user" :user="user"></dashboard>
+    <landing v-on:demoMode="demoMode = true" v-if="isSignedOut() || !demoMode"></landing>
+    <dashboard 
+      v-on:stopDemoMode="demoMode = false" 
+      v-if="user || demoMode" 
+      :demoMode="demoMode" 
+      :user="user"
+    ></dashboard>
   </v-app>
 </template>
 
@@ -34,7 +39,13 @@ export default {
     return {
       blockstack: window.blockstack,
       user: null,
-      showLoading: false
+      showLoading: false,
+      demoMode: false
+    }
+  },
+  methods: {
+    isSignedOut () {
+      !this.blockstack.isUserSignedIn()
     }
   }
 }

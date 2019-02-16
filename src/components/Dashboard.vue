@@ -4,7 +4,7 @@
       <loading-animation v-bind="{ showLoading }">
       </loading-animation>
       <page-header
-        v-bind:user="user"
+        v-bind:user="getUser()"
         v-on:editProfile="editProfile"
       >
       </page-header>
@@ -19,6 +19,7 @@
         <sign-out-dialog
           v-bind="{ showSignOutDialog }"
           v-on:hideSignOutDialog="showSignOutDialog = false"
+          v-on:stopDemoMode="$emit('stopDemoMode')"
         >
         </sign-out-dialog>
         <add-friend-dialog
@@ -92,7 +93,8 @@ export default {
   name: 'dashboard',
   components: components,
   props: {
-    user: Object
+    user: Object,
+    demoMode: Boolean
   },
   data () {
     return {
@@ -139,16 +141,19 @@ export default {
   watch: {
     friends: {
       handler: function (friends) {
+        if (this.demoMode) { return }
         FriendStorageService.storeJSON(JSON.stringify(friends))
       },
       deep: true
     }
   },
   mounted () {
-    console.log('fetchData')
     this.fetchData()
   },
   methods: {
+    getUser () {
+      return this.user || this.demoUser()
+    },
     search (term) {
       this.searchTerm = term
     },
@@ -179,7 +184,6 @@ export default {
       this.showLoading = false
     },
     addNote ({ selectedFriend, note }) {
-      console.log(selectedFriend, note)
       const friend = this.friends.find((friend) => friend === selectedFriend)
       friend.notes.push(note)
     },
@@ -196,10 +200,21 @@ export default {
       let max = Math.max(...this.friends.map((person) => person.id)) || 0
       return max + 1
     },
+    demoUser () {
+      return { username: 'Darryl Demo' }
+    },
+    loadDemoFriends () {
+      this.startLoading()
+      setTimeout(() => {
+        this.friends = Friend.demo()
+        this.endLoading()
+      }, 1000)
+    },
     editProfile () {
       console.log('edit profile!')
     },
     fetchData () {
+      if (this.demoMode) { return this.loadDemoFriends() }
       this.startLoading()
       FriendStorageService.fetchJSON()
       .then((peopleJSONBlob) => {

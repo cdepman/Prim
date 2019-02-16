@@ -24,6 +24,7 @@
       <v-card-text>
         <v-layout justify-center column fill-height>
             <v-text-field
+              :rules="['Required']"
               v-model="person.name"
               label="Name"
             ></v-text-field>
@@ -52,7 +53,7 @@
         <v-btn
           color="blue darken-1"
           flat
-          @click="$emit('hideAddFriendDialog'); $emit('addPerson', person)"
+          @click="addFriend"
         >
           Save
         </v-btn>
@@ -64,12 +65,26 @@
 export default {
   data () {
     return {
-      formTitle: 'Add Entry'
+      formTitle: 'Add Friend'
     }
   },
   props: {
     showAddFriendDialog: Boolean,
     person: Object
+  },
+  methods: {
+    addFriend () {
+      if (this.inComplete()) { return }
+      this.$emit('addPerson', this.person)
+      this.$emit('hideAddFriendDialog')
+    },
+    inComplete () {
+      const firstNote = this.person.notes[0]
+      if (!this.person.name || !firstNote.title || !firstNote.content) {
+        alert('Please enter a name and at least one note with a title!')
+        return true
+      }
+    }
   }
 }
 </script>

@@ -48,6 +48,10 @@ export default {
   },
   methods: {
     signOut () {
+      if (this.demoMode) {
+        this.$emit('stopDemoMode')
+        return
+      }
       AuthenticationService.signUserOut()
     }
   }

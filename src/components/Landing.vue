@@ -12,30 +12,22 @@
           <div>
             <div class="headline">Prim</div>
             <span class="grey--text">
-              A secure, decentralized personal relationship manager built on <a href="https://blockstack.org" target="_blank">Blockstack</a>.
+              A secure, decentralized personal relationship manager.
             </span>
           </div>
         </v-card-title>
 
         <v-card-actions>
-          <v-btn small @click.prevent="signIn">Log In With Blockstack</v-btn>
-          <v-btn small>
-            <a href="https://blockstack.org/faq/">
-              Learn More
-            </a>
-          </v-btn>
+          <v-btn small @click.prevent="signIn">Log In (Blockstack)</v-btn>
+          <v-btn color="purple darken-3" small @click.prevent="$emit('demoMode')">Demo the App</v-btn>
           <v-spacer></v-spacer>
-          <v-btn icon @click="show = !show">
-            <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-          </v-btn>
         </v-card-actions>
-
         <v-slide-y-transition>
-          <v-card-text v-show="show">
-            Own your data - Prim provides a secure space to collect, synthesize, and utilize
+          <v-card-text>
+            <span id="logo_letters">Own your data</span> - Prim provides a secure space to collect, synthesize, and utilize
             information about the people who matter in your life. All computations relating to your data
-            happen on your device, <strong>never</strong> through a centralized server.
-            Share locally - Choose who you share your personal information with using single-time-use QR codes.
+            happen on your device, <strong>never</strong> through a centralized server. When your data gets stored, it is encryped to your account.
+            Share locally and intimately - choose who you share your personal information with using single-time-use QR codes.
           </v-card-text>
         </v-slide-y-transition>
       </v-card>
@@ -46,10 +38,7 @@
 <script>
 export default {
   name: 'landing',
-  data: () => ({
-    show: true,
-    blockstack: window.blockstack
-  }),
+  data: () => ({ blockstack: window.blockstack }),
   methods: {
     signIn () {
       const blockstack = this.blockstack
@@ -67,5 +56,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#logo_letters {
+  text-align: center;
+  background: linear-gradient(to right, pink 20%, purple 40%, violet 60%, turquoise 80%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: shine 6s linear infinite;
+          animation: shine 6s linear infinite;
+}
+@-webkit-keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
 }
 </style>
