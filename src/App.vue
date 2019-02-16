@@ -1,8 +1,8 @@
 <template>
   <v-app dark style="overflow: hidden">
     <loading-animation v-bind="{ showLoading }"></loading-animation>
-    <landing v-on:demoMode="demoMode = true" v-if="isSignedOut() || !demoMode"></landing>
-    <dashboard 
+    <landing v-bind="{ demoMode }" v-on:demoMode="demoMode = true" v-if="isSignedOut() && !demoMode"></landing>
+    <dashboard
       v-on:stopDemoMode="demoMode = false" 
       v-if="user || demoMode" 
       :demoMode="demoMode" 
