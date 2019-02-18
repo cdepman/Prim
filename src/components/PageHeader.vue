@@ -5,7 +5,7 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-chip color="purple dark-3" id="user_chip" @click="$emit('editProfile')">
-        {{ user.username }}
+        {{ user.name || blockstackUser.username }}
       </v-chip>
     </v-toolbar-items>
   </v-toolbar>
@@ -16,7 +16,8 @@ import LogoAnimation from './LogoAnimation'
 
 export default {
   props: {
-    user: Object
+    user: Object,
+    blockstackUser: Object
   },
   components: { LogoAnimation }
 }

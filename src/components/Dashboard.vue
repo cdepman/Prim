@@ -5,6 +5,7 @@
       </loading-animation>
       <page-header
         v-bind:user="getUser()"
+        v-bind:blockstackUser="blockstackUser"
         v-on:editProfile="editProfile"
       >
       </page-header>
@@ -30,7 +31,7 @@
         >
         </add-friend-dialog>
         <friend-detail-dialog
-          v-if="selectedFriend"
+          v-if="showFriendDetailDialog"
           v-bind="{ selectedFriend, showFriendDetailDialog }"
           v-on:updateFriend="updateFriend"
           v-on:hideAddFriendDialog="showFriendDetailDialog = false"
@@ -38,6 +39,15 @@
           v-on:addNote="addNote"
         >
         </friend-detail-dialog>
+        <user-detail-dialog
+          v-if="showUserDetailDialog"
+          v-bind="{ userData, showUserDetailDialog, blockstackUser }"
+          v-on:updateFriend="updateFriend"
+          v-on:hideAddFriendDialog="showUserDetailDialog = false"
+          v-on:showNoteDetail="noteDetail"
+          v-on:addNoteToSelf="addNoteToSelf"
+        >
+        </user-detail-dialog>
         <search-bar v-on:search="search">
         </search-bar>
         <searchable-list
@@ -57,20 +67,24 @@
 
 <script>
 import Friend from '../dataModels/Friend.js'
-import CreateFriend from '../interactors/CreateFriend.js'
 import PageHeader from './PageHeader.vue'
-import FriendStorageService from '../services/FriendStorage.js'
 import QRShow from './QRShow.vue'
 import QRRead from './QRRead.vue'
 import WebRTC from './WebRTC.vue'
 import AddFriendDialog from './AddFriendDialog.vue'
 import FriendDetailDialog from './FriendDetailDialog.vue'
+import UserDetailDialog from './UserDetailDialog.vue'
 import SearchableList from './SearchableList.vue'
 import Navigation from './Navigation.vue'
 import NavigationFloat from './NavigationFloat.vue'
 import SignOutDialog from './SignOutDialog.vue'
 import LoadingAnimation from './LoadingAnimation.vue'
 import SearchBar from './SearchBar.vue'
+
+import CreateFriend from '../interactors/CreateFriend.js'
+
+import FriendStorageService from '../services/FriendStorage.js'
+import UserStorageService from '../services/UserStorage.js'
 
 import Fuse from 'fuse.js'
 
@@ -86,14 +100,15 @@ const components = {
   NavigationFloat,
   SignOutDialog,
   LoadingAnimation,
-  SearchBar
+  SearchBar,
+  UserDetailDialog
 }
 
 export default {
   name: 'dashboard',
   components: components,
   props: {
-    user: Object,
+    blockstackUser: Object,
     demoMode: Boolean
   },
   data () {
@@ -101,13 +116,16 @@ export default {
       showLoading: true,
       showAddFriendDialog: false,
       showFriendDetailDialog: false,
+      showUserDetailDialog: false,
       showSignOutDialog: false,
       showNoteDetail: false,
       friends: [],
+      userData: { name: '', notes: [] },
       showQR: false,
       selectedFriend: null,
       selectedNote: null,
       person: {
+        name: '',
         notes: [
           {
             title: '',
@@ -145,6 +163,14 @@ export default {
         FriendStorageService.storeJSON(JSON.stringify(friends))
       },
       deep: true
+    },
+    userData: {
+      handler: function (userData) {
+        if (this.demoMode) return
+        if (!userData.name) return
+        UserStorageService.storeJSON(JSON.stringify(userData))
+      },
+      deep: true
     }
   },
   mounted () {
@@ -152,13 +178,13 @@ export default {
   },
   methods: {
     getUser () {
-      return this.user || this.demoUser()
+      if (this.demoMode) return this.demoUser()
+      return this.userData
     },
     search (term) {
       this.searchTerm = term
     },
     noteDetail (note) {
-      console.log(note)
       this.selectedNote = note
       this.showNoteDetail = true
     },
@@ -168,6 +194,9 @@ export default {
     selectFriend (selectedFriend) {
       this.selectedFriend = selectedFriend
       this.showFriendDetailDialog = true
+    },
+    addNoteToSelf (note) {
+      this.userData.notes.push(note)
     },
     updateFriend (updatedFriend) {
       const numItemsToReplace = 1
@@ -201,30 +230,59 @@ export default {
       return max + 1
     },
     demoUser () {
-      return { username: 'Darryl Demo' }
+      return {
+        name: 'Darryl Demo',
+        notes: [
+          {
+            title: 'Age',
+            content: 'Ageless 🤩'
+          },
+          {
+            title: 'Favorite Candy',
+            content: 'Haribo watermelon slices'
+          },
+          {
+            title: 'Tennis',
+            content: 'I love tennis. Level 6. Wanna hit sometime?'
+          }
+        ]
+      }
     },
     loadDemoFriends () {
       this.startLoading()
+      // show off animation
       setTimeout(() => {
+        this.userData = this.demoUser()
         this.friends = Friend.demo()
         this.endLoading()
       }, 1000)
     },
     editProfile () {
-      console.log('edit profile!')
+      this.showUserDetailDialog = true
+    },
+    handleUserData (userData) {
+      let user = JSON.parse(userData)
+      if (!user) return
+      if (Object.keys(user).length > 0) {
+        this.userData = user
+      }
     },
     fetchData () {
       if (this.demoMode) { return this.loadDemoFriends() }
       this.startLoading()
-      FriendStorageService.fetchJSON()
-      .then((peopleJSONBlob) => {
-        let friends = JSON.parse(peopleJSONBlob || '[]')
-        if (friends.length) {
-          let inflatedPeople = friends.map((p) => Friend.fromJson(p))
-          this.friends = inflatedPeople
-          this.endLoading()
-        }
+      UserStorageService.fetchJSON().then((userData) => {
+        this.handleUserData(userData)
+        FriendStorageService.fetchJSON()
+        .then((peopleJSONBlob) => {
+          let friends = JSON.parse(peopleJSONBlob || '[]')
+          if (friends.length) {
+            let inflatedPeople = friends.map((p) => Friend.fromJson(p))
+            this.friends = inflatedPeople
+            this.endLoading()
+          }
+        })
       })
+       // add error handling
     }
   }
 }

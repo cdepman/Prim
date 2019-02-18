@@ -4,9 +4,9 @@
     <landing v-bind="{ demoMode }" v-on:demoMode="demoMode = true" v-if="isSignedOut() && !demoMode"></landing>
     <dashboard
       v-on:stopDemoMode="demoMode = false" 
-      v-if="user || demoMode" 
+      v-if="blockstackUser || demoMode" 
       :demoMode="demoMode" 
-      :user="user"
+      :blockstackUser="blockstackUser"
     ></dashboard>
   </v-app>
 </template>
@@ -24,8 +24,8 @@ export default {
     const blockstack = this.blockstack
     if (blockstack.isUserSignedIn()) {
       this.userData = blockstack.loadUserData()
-      this.user = new blockstack.Person(this.userData.profile)
-      this.user.username = this.userData.username
+      this.blockstackUser = new blockstack.Person(this.userData.profile)
+      this.blockstackUser.username = this.userData.username
     } else if (blockstack.isSignInPending()) {
       this.showLoading = true
       blockstack.handlePendingSignIn()
@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       blockstack: window.blockstack,
-      user: null,
+      blockstackUser: null,
       showLoading: false,
       demoMode: false
     }

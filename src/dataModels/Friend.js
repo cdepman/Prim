@@ -28,6 +28,10 @@ class DemoContent {
           {
             title: 'Planes',
             content: 'Amelia loves flying. She is unstoppable. They say she is one of the best'
+          },
+          {
+            title: 'Spouse',
+            content: 'George. Explorer. Publisher, Author, Promoter.'
           }
         ]
       },
@@ -42,12 +46,16 @@ class DemoContent {
             content: 'She loves Greenwich Village and has many friends in the art scene there.'
           },
           {
-            title: 'Siblings',
-            content: 'She has 6 siblings. Do any of them live nearby?'
+            title: 'Parents',
+            content: 'Alberta is a housekeeper Malcolm Works at General Motors.'
           },
           {
             title: 'New Jersey',
             content: 'She was born there, and sometimes visits family.'
+          },
+          {
+            title: 'Birthday',
+            content: 'August 24, 1945'
           }
         ]
       },
@@ -57,6 +65,14 @@ class DemoContent {
         createdAt: Date.now(),
         updatedAt: Date.now(),
         notes: [
+          {
+            title: 'Birthday',
+            content: 'March 1, 1980'
+          },
+          {
+            title: 'Quiddich',
+            content: 'Plays and likes the Chudley Cannons.'
+          },
           {
             title: 'Hogwarts',
             content: 'Went to wizarding school. Can he help me with a few projects?'

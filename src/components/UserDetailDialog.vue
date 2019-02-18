@@ -12,7 +12,7 @@
     >
     </add-note-dialog>
     <v-dialog
-      v-model="showFriendDetailDialog"
+      v-model="showUserDetailDialog"
       fullscreen
       hide-overlay
       dark
@@ -21,11 +21,12 @@
       <v-card id="friend_detail" raised>
         <v-card-title>
           <span v-if="!editName" class="headline">
-            {{ selectedFriend.name }}
+            {{ userData.name || blockstackUser.username }}
           </span>
           <v-text-field
             v-if="editName"
-            v-model="selectedFriend.name"
+            v-model="userData.name"
+            :placeholder="blockstackUser.username"
           ></v-text-field>
           <v-btn
             small
@@ -34,8 +35,8 @@
         </v-card-title>
         <v-card-text>
           <v-layout row-wrap fill-height>
-            <div v-if="selectedFriend.notes.length">
-              <v-chip v-for="note in selectedFriend.notes" v-bind:key="note.id" v-on:click="selectedNote = note; showNoteDetail = true">
+            <div v-if="userData.notes.length">
+              <v-chip v-for="note in userData.notes" v-bind:key="note.id" v-on:click="selectedNote = note; showNoteDetail = true">
                 {{ note.title }}
               </v-chip>
             </div>
@@ -53,7 +54,7 @@
           <v-btn
             block
             color="gray darken-1"
-            @click="hideFriendDialog"
+            @click="showFriendDialog"
           >
             Close
           </v-btn>
@@ -78,21 +79,21 @@ export default {
     }
   },
   props: {
-    showFriendDetailDialog: Boolean,
-    selectedFriend: Object
+    showUserDetailDialog: Boolean,
+    userData: Object,
+    blockstackUser: Object
   },
   methods: {
     edit () {
       this.disabled = !this.disabled
     },
-    hideFriendDialog () {
+    showFriendDialog () {
       this.$emit('hideAddFriendDialog')
       this.disabled = true
     },
     addNote (note) {
       console.log('new note!', note)
-      const selectedFriend = this.selectedFriend
-      this.$emit('addNote', { selectedFriend, note })
+      this.$emit('addNoteToSelf', note)
     }
   },
   computed: {

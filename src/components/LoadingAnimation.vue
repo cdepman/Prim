@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="showLoading" fullscreen content: class="loading" content-class="centered-dialog">
+    <v-dialog v-model="showLoading" fullscreen content-class="centered-dialog">
       <v-container fill-height>
         <v-layout column justify-center align-center>
           <fingerprint-spinner :animation-duration="1500" :size="64" :color="progressColor" />
@@ -39,6 +39,6 @@ export default {
   color: whitesmoke;
 }
 .loading {
-  background: rgba(255, 56, 23, 0.4)
+  background: black;
 }
 </style>
