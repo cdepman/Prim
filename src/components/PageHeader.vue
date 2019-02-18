@@ -5,6 +5,7 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-chip color="purple dark-3" id="user_chip" @click="$emit('editProfile')">
+        <i class="fas fa-edit fa-1x" style="padding-right: 5px;"></i>
         {{ user.name || blockstackUser.username }}
       </v-chip>
     </v-toolbar-items>
