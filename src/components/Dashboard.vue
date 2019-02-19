@@ -142,7 +142,7 @@ export default {
   },
   computed: {
     qrContents () {
-      return JSON.stringify(this.friends)
+      return JSON.stringify(this.userData)
     },
     filteredFriends () {
       if (!this.searchTerm) return this.friends
