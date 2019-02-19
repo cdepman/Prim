@@ -60,9 +60,11 @@ export default {
 }
 
 .friend-list {
+  overflow: auto;
   top: 140px;
   position: absolute;
   right: 15px;
   left: 15px;
+  bottom: 100px;
 }
 </style>
