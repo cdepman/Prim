@@ -104,6 +104,18 @@ const components = {
   UserDetailDialog
 }
 
+const friendInputModel = () => (
+  {
+    name: '',
+    notes: [
+      {
+        title: '',
+        content: ''
+      }
+    ]
+  }
+)
+
 export default {
   name: 'dashboard',
   components: components,
@@ -124,15 +136,7 @@ export default {
       showQR: false,
       selectedFriend: null,
       selectedNote: null,
-      person: {
-        name: '',
-        notes: [
-          {
-            title: '',
-            content: ''
-          }
-        ]
-      },
+      person: friendInputModel(),
       searchTerm: ''
     }
   },
@@ -222,7 +226,7 @@ export default {
         attributes: this.person
       })
       this.friends.unshift(friendToAdd)
-      this.person = {}
+      this.person = friendInputModel()
     },
     getNextPersonId () {
       if (this.friends.length === 0) return 0
