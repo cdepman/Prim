@@ -1,6 +1,6 @@
 <template>
   <v-card dark data-app class="friend-list">
-    <v-flex style="overflow: auto">
+    <v-flex style="overflow: scroll">
       <v-data-table
         hide-headers
         :items="items"
@@ -60,6 +60,9 @@ export default {
 }
 
 .friend-list {
-  top: 20px;
+  top: 140px;
+  position: absolute;
+  right: 15px;
+  left: 15px;
 }
 </style>

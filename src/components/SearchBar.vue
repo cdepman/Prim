@@ -1,7 +1,7 @@
 <template>
-  <v-card style="background: none;">
+  <v-card :style="containerStyle">
     <v-text-field
-      :style="style"
+      :style="textFieldStyle"
       v-model="search"
       append-icon="search"
       label="Search"
@@ -26,7 +26,15 @@
       left: true,
       transition: 'slide-y-reverse-transition',
       search: '',
-      style: 'padding-top: 50px'
+      textFieldStyle: 'padding-top: 50px',
+      containerStyle: `background: none; 
+                       position: fixed;
+                       z-index: 10; 
+                       right: 0px; 
+                       width: 100%; 
+                       padding-right: 15px; 
+                       padding-left: 15px; 
+                       box-shadow: none;`
     }),
     watch: {
       search: {
