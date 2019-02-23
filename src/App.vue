@@ -1,5 +1,5 @@
 <template>
-  <v-app dark style="overflow: hidden">
+  <v-app dark style="overflow: hidden; position: fixed; width: 100%;">
     <loading-animation v-bind="{ showLoading }"></loading-animation>
     <landing v-bind="{ demoMode }" v-on:demoMode="demoMode = true" v-if="isSignedOut() && !demoMode"></landing>
     <dashboard
