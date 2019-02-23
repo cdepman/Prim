@@ -19,7 +19,7 @@
       transition="dialog-bottom-transition"
     >
       <v-card id="friend_detail" raised>
-        <v-card-title>
+        <v-card-title style="justify-content: space-between; height: 80px;">
           <span v-if="!editName" class="headline">
             {{ selectedFriend.name }}
           </span>

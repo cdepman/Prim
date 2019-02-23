@@ -3,7 +3,7 @@
     <v-dialog v-model="showNoteDetail" persistent dark scrollable max-width="300px">
       <v-card>
         <v-card-title>
-          <span v-if="!editNote" class="headline">
+          <span v-if="!editNote">
             {{ selectedNote.title }}
           </span>
           <v-text-field
@@ -12,8 +12,8 @@
           ></v-text-field>
         </v-card-title>
         <v-divider></v-divider>
-          <v-card-text style="height: 300px;">
-            <span v-if="!editNote" class="headline">
+          <v-card-text style="height: 300px; overflow: hidden;">
+            <span v-if="!editNote">
               {{ selectedNote.content }}
             </span>
             <v-text-field multi-line solo
