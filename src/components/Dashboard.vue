@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="position: fixed; width: 100%">
     <v-content>
       <loading-animation v-bind="{ showLoading }">
       </loading-animation>
