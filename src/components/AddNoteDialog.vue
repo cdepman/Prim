@@ -21,7 +21,6 @@
             <v-textarea
               v-model="note.content"
               placeholder="Note"
-              auto-grow
               full-width
             ></v-textarea>
         </v-layout>

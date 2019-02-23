@@ -1,6 +1,6 @@
 <template>
   <v-card dark data-app class="friend-list">
-    <v-flex style="overflow: scroll">
+    <v-flex style="overflow: scroll" class="scroll-list">
       <v-data-table
         hide-headers
         :items="items"
@@ -57,6 +57,12 @@ export default {
 .search-bar {
   margin: 10px;
   padding-top: 18px;
+}
+
+.scroll-list {
+  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-overflow-scrolling: touch;
 }
 
 .friend-list {
