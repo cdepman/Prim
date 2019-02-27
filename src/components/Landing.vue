@@ -24,10 +24,10 @@
         </v-card-actions>
         <v-slide-y-transition>
           <v-card-text>
-            <span id="logo_letters">Own your data</span> - Prim provides a secure space to collect, synthesize, and utilize
+            <span id="logo_letters">Own your data</span> - Prim provides a safe space to collect, synthesize, and utilize
             information about the people who matter in your life. All computations relating to your data
-            happen on your device, <strong>never</strong> through a centralized server. When your data gets stored, it is encryped to your account.
-            Share locally and intimately - choose who you share your personal information with using single-time-use QR codes.
+            happen on your device, <strong>never</strong> through a centralized server. Your data is encrypted,
+            secured and stored so only you can decrypt it. Share your profile intimately with single-time-use QR codes.
           </v-card-text>
         </v-slide-y-transition>
       </v-card>
